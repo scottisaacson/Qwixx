@@ -10,6 +10,7 @@ import java.text.*;
 public class Move {
     
     // don't add BOTH yet, will do that later
+    // maybe nextweek
     enum MOVETYPE {
         COLORS,
         WHITES
