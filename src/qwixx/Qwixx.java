@@ -36,7 +36,7 @@ public class Qwixx
   
     public static final String Resources = "c:\\java\\Resources\\";  
     
-    // Swing
+    // Swing Comments
     static Game game;
     static JFrame frame;
 
