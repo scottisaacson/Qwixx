@@ -46,7 +46,6 @@ public class Qwixx
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 
-                // JFrame frame = new JFrame("Qwixx Game");
                 frame = new JFrame("Qwixx Game");
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 
