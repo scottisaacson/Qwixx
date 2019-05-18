@@ -37,8 +37,6 @@ public class Qwixx
     public static final String Resources = "c:\\java\\Resources\\";  
     
     // Swing
-    //PlayDialog playDialog;
-    //SetupDialog setupDialog;
     static Game game;
     static JFrame frame;
 
