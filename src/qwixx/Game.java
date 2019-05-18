@@ -371,13 +371,9 @@ public class Game {
     
         Player p = null;
         
-        p = new Player(game, "Nina", Player.STRATEGY.Human);
+        p = new Player(game, "Player 1", Player.STRATEGY.Human);
         players.add(p);
-        p = new Player(game, "Scott", Player.STRATEGY.Computer);
-        players.add(p);
-        p = new Player(game, "Sam", Player.STRATEGY.Computer);
-        players.add(p);
-        p = new Player(game, "Hunter", Player.STRATEGY.Computer);
+        p = new Player(game, "Player 2", Player.STRATEGY.Computer);
         players.add(p);
         
         return players;
