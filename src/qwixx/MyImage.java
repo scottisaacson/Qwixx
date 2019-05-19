@@ -36,7 +36,10 @@ public class MyImage extends JPanel {
 
         String path = "QwixxGit/resources/blue1_50.png";
         String fullPath = this.getClass().getClassLoader().getResource("").toString();
-        fullPath = fullPath + "../../resources/";
+        // String fullPath = this.getClass().getResource("").toString();
+        System.out.println(fullPath);
+        fullPath = fullPath + "";
+        System.out.println(fullPath);
         
         try {
             
