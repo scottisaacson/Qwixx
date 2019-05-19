@@ -245,7 +245,7 @@ class MoveSelectListener implements MouseListener {
      
     
     public void mouseClicked(MouseEvent e) {
-        
+
         MoveSelect ms = (MoveSelect) e.getComponent();
 
         Container c1 = ms.getParent();   // Panel
@@ -315,15 +315,85 @@ class MoveSelectListener implements MouseListener {
                 dialog.setVisible(false);
             }
         }
+    }
+    public void mousePressed(MouseEvent e) {
+
+        MoveSelect ms = (MoveSelect) e.getComponent();
+
+        Container c1 = ms.getParent();   // Panel
+        Container c2 = c1.getParent();   // Display
+        Container c3 = c2.getParent();   // Root
+
+        PlayerChooseMove dialog = (PlayerChooseMove) c3.getParent();
+         
+        int val = ms.val;
+        Game.COLORS c = null;
+        if (ms.back.equals(Qwixx.myred)) c = Game.COLORS.RED;
+        if (ms.back.equals(Qwixx.myyellow)) c = Game.COLORS.YELLOW;
+        if (ms.back.equals(Qwixx.mygreen)) c = Game.COLORS.GREEN;
+        if (ms.back.equals(Qwixx.myblue)) c = Game.COLORS.BLUE;
         
-      }
-      public void mousePressed(MouseEvent e) {
-      }
-      public void mouseReleased(MouseEvent e) {
-      }
-      public void mouseEntered(MouseEvent e) {
-      }
-      public void mouseExited(MouseEvent e) {
-      }
+        if (c != null)
+        {
+            dialog.thisOne = ms.player.sheet.findEntry(c, val);
+        }
+        else
+        {
+            dialog.thisOne = null;
+        }
+
+        if (dialog.thisOne != null)
+        {
+
+            /*
+            // print it for fun
+            if (dialog.thisOne != null)
+            {
+                dialog.thisOne.print();
+            }
+            else
+            {
+                System.out.println("NONE SELECTED");
+            }
+            */
+            
+            SheetEntry se = dialog.thisOne;
+            
+            boolean goodMove = false;
+            ArrayList<Move> moves = null;
+            if (ms.t == Move.MOVETYPE.COLORS)
+            {
+                moves = ms.player.colorMoves;
+            }
+            else
+            {
+                moves = ms.player.whiteMoves;
+            }
+            
+            for (Move m : moves)
+            {
+                if (c == m.se.color && val == m.se.val)
+                {
+                    goodMove = true;
+                }
+            }
+    
+            if (goodMove == false)
+            {
+                dialog.thisOne = null; // we did not select valid one, keep waiting
+            }
+            else
+            {
+                dialog.setVisible(false);
+            }
+        }
+
+    }
+    public void mouseReleased(MouseEvent e) {
+    }
+    public void mouseEntered(MouseEvent e) {
+    }
+    public void mouseExited(MouseEvent e) {
+    }
 }
 
