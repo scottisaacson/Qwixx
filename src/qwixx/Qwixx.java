@@ -59,7 +59,7 @@ public class Qwixx
                 pane.setBackground(mydarkgrey);
                 Insets paneInsets = pane.getInsets();
 
-                MyImage mi = new MyImage();
+                MyImage mi = new MyImage(this);
                 mi.setVisible(true);
                 mi.setBounds(10, 10, 400, 300);
                 pane.add(mi);
