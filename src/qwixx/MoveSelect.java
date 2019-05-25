@@ -211,12 +211,25 @@ class MoveSelect extends JPanel
             }
             if (h == HIGHLIGHT.BOTH)
             {
-                
-                g.setColor(Color.black);
+                /*
+                g.setColor(Color.magenta);
                 g.fillRect(0, 0, 50, 5);
                 g.fillRect(0, 0, 5, 50);
                 g.fillRect(45, 0, 5, 50);
                 g.fillRect(0, 45, 50, 5);
+                */
+
+                g.setColor(Color.white);
+                g.fillRect(0, 0, 50, 5); // top (top left  50 x 5)
+                g.fillRect(0, 0, 5, 50); // left (top left  5 x 50)
+                g.fillRect(45, 0, 5, 50); // right (top left 5 x 50)
+                g.fillRect(0, 45, 50, 5); // bottom (top left 50 x 5)
+
+                g.setColor(Color.magenta);
+                g.fillRect(5, 5, 40, 5); // top (top left  40 x 5)
+                g.fillRect(5, 5, 5, 40); // left (top left  5 x 40)
+                g.fillRect(40, 5, 5, 40); // right (top left 5 x 40)
+                g.fillRect(5, 40, 40, 5); // bottom (top left 40 x 5)
                 
             }
         }
