@@ -13,18 +13,15 @@ import java.text.*;
 
 public class MyImage extends JPanel {
 
-    private Image myImage;
     private Image blue1;
     private Image red6;
     private Image yellow3;
     private Image green5;
     private Image white4;
     private Image white2;
-    private Object o;
 
-    public MyImage(Object o) {
+    public MyImage() {
 
-        
         initPanel();
     }
 
@@ -34,45 +31,20 @@ public class MyImage extends JPanel {
         var dm = new Dimension(500, 300);
         setPreferredSize(dm);
 
-        String path = "QwixxGit/resources/blue1_50.png";
-        String fullPath = this.getClass().getClassLoader().getResource("").toString();
-        // String fullPath = this.getClass().getResource("").toString();
-        System.out.println(fullPath);
-        fullPath = fullPath + "";
-        System.out.println(fullPath);
-        
-        try {
-            
-            String resPath = fullPath + "blue1_50.png";
-            blue1 = new ImageIcon(new URL(resPath)).getImage();
+        blue1 = Qwixx.getResourceImage(this, "blue1_50.png");
 
-            resPath = fullPath + "red6_50.png";
-            red6 = new ImageIcon(new URL(resPath)).getImage();
+        red6 = Qwixx.getResourceImage(this, "red6_50.png");
 
-            resPath = fullPath + "yellow3_50.png";
-            yellow3 = new ImageIcon(new URL(resPath)).getImage();
+        yellow3 = Qwixx.getResourceImage(this, "yellow3_50.png");
 
-            resPath = fullPath + "green5_50.png";
-            green5 = new ImageIcon(new URL(resPath)).getImage();
+        green5 = Qwixx.getResourceImage(this, "green5_50.png");
 
-            resPath = fullPath + "white4_50.png";
-            white4 = new ImageIcon(new URL(resPath)).getImage();
+        white4 = Qwixx.getResourceImage(this, "white4_50.png");
 
-            resPath = fullPath + "white2_50.png";
-            white2 = new ImageIcon(new URL(resPath)).getImage();
-            
-        } catch (MalformedURLException e)
-        {
-            System.exit(-8);
-        }
+        white2 = Qwixx.getResourceImage(this, "white2_50.png");
+
     }
 
-    /*
-    private void loadImage() {
-
-        myImage = new ImageIcon(Qwixx.Resources + "beach.jpg").getImage();
-    }
-    */
 
     private void doDrawing(Graphics g) {
 

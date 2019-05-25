@@ -34,7 +34,7 @@ public class Qwixx
     Dimension size50 = new Dimension(50, 50);
     Dimension size30 = new Dimension(30, 30);
   
-    public static final String Resources = "c:\\java\\Resources\\";  
+    // public static final String Resources = "c:\\java\\Resources\\";  
     
     // Swing Comments
     static Game game;
@@ -59,7 +59,7 @@ public class Qwixx
                 pane.setBackground(mydarkgrey);
                 Insets paneInsets = pane.getInsets();
 
-                MyImage mi = new MyImage(this);
+                MyImage mi = new MyImage();
                 mi.setVisible(true);
                 mi.setBounds(10, 10, 400, 300);
                 pane.add(mi);
@@ -142,6 +142,15 @@ public class Qwixx
                 
             }
         });
+    }
+    
+    public static Image getResourceImage(Object o, String resName)
+    {
+        javax.swing.ImageIcon ii = new javax.swing.ImageIcon(o.getClass().getResource("/" + resName));
+        Image ret = ii.getImage();
+        
+        return ret;
+        
     }
 }
 

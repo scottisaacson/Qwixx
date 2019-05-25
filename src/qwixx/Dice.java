@@ -23,12 +23,12 @@ public class Dice {
     public Dice (Game game)
     {
         this.game = game;
-        white1 = new Die();
-        white2 = new Die();
-        blue = new Die();
-        green = new Die();
-        red = new Die();
-        yellow = new Die();
+        white1 = new Die(game);
+        white2 = new Die(game);
+        blue = new Die(game);
+        green = new Die(game);
+        red = new Die(game);
+        yellow = new Die(game);
         whites = null;
         red1 = null;
         red2 = null;

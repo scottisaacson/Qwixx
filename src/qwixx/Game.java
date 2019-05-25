@@ -48,7 +48,6 @@ public class Game {
     PlayersSummary ps = null;
     SetupDialog  sd = null;
     
-    
     public Game(JFrame frame) {
 
         this.frame = frame;
@@ -66,6 +65,7 @@ public class Game {
         players = Game.defaultPlayers(this);
         
         setFirstPlayer();
+
         
     }
 
@@ -99,6 +99,7 @@ public class Game {
         }
         
         setFirstPlayer();
+
         
     }
     

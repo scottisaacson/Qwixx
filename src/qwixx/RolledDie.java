@@ -12,6 +12,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
 import java.util.*;
+import java.net.*;
 
 class RolledDie extends JPanel {
 
@@ -54,8 +55,9 @@ class RolledDie extends JPanel {
         {
             colorName = "white";
         }
-        filename = Qwixx.Resources + colorName + die.val + "_50.png";    
-        image = new ImageIcon(filename).getImage();
+
+        image = Qwixx.getResourceImage(this, colorName + die.val + "_50.png");
+
         Dimension size = new Dimension(image.getWidth(null), image.getHeight(null));
         setPreferredSize(size);
         setMinimumSize(size);
