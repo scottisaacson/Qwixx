@@ -194,29 +194,37 @@ public class Game {
         
         // dice.print();
         
-        for (Player p : players)
+        ArrayList<Player> orderedPlayers = getOrderedPlayers();
+        
+        for (Player p : orderedPlayers)
         {
-            if (p != current)
+            if (gameover != GAMEOVER.QUIT)
             {
-                p.playWhites();
-                p.score();
-                if (gameover == GAMEOVER.QUIT)
+                if (p != current)
                 {
-                    break;
+                    p.playWhites();
+                    p.score();
+                    if (gameover == GAMEOVER.QUIT)
+                    {
+                        break;
+                    }
+                }
+                else
+                {
+                    p.playWhitesConsideringColors();
+                    p.score();
+                    if (gameover == GAMEOVER.QUIT)
+                    {
+                        break;
+                    }
+                    p.playColors();
+                    p.score();
+                    if (gameover == GAMEOVER.QUIT)
+                    {
+                        break;
+                    }
                 }
             }
-        }
-
-        if (gameover != GAMEOVER.QUIT)
-        {
-            current.playWhitesConsideringColors();
-            current.score();
-        }
-        
-        if (gameover != GAMEOVER.QUIT)
-        {
-            current.playColors();
-            current.score();
         }
         
         checkForNewLock();
@@ -372,15 +380,37 @@ public class Game {
     
         Player p = null;
         
-        p = new Player(game, "Player 1", Player.STRATEGY.Human);
+        p = new Player(game, "Scott", Player.STRATEGY.Human);
         players.add(p);
-        p = new Player(game, "Player 2", Player.STRATEGY.Computer);
+        p = new Player(game, "Nina", Player.STRATEGY.Computer);
+        players.add(p);
+        p = new Player(game, "Sam", Player.STRATEGY.Computer);
         players.add(p);
         
         return players;
     }    
     
-    
+    public ArrayList<Player> getOrderedPlayers()
+    {
+        
+        ArrayList<Player> ret = new ArrayList<Player>();
+        
+        int count = 0;
+        int size = players.size();
+        int index = cpi + 1;
+        if (index == size) index = 0;
+        
+        while (count < size)
+        {
+            Player p = players.get(index);
+            ret.add(p);
+            index++;
+            count++;
+            if (index == size) index = 0;
+        }
+        
+        return ret;
+    }
     
 }
 
