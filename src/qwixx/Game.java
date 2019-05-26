@@ -100,7 +100,6 @@ public class Game {
         
         setFirstPlayer();
 
-        
     }
     
     public void roll()
@@ -147,19 +146,7 @@ public class Game {
     public void playGame()
     {
         
-        /*
-        for (Player p : players)
-        {
-            SheetEntry se = p.sheet.findEntry(p.sheet.reds, 11);
-            se.marked = true;
-            se = p.sheet.findEntry(p.sheet.yellows, 11);
-            se.marked = true;
-            se = p.sheet.findEntry(p.sheet.greens, 3);
-            se.marked = true;
-            se = p.sheet.findEntry(p.sheet.blues, 3);
-            se.marked = true;
-        }
-        */
+        
         
         while (gameover == GAMEOVER.NO)
         {
@@ -204,6 +191,7 @@ public class Game {
                 {
                     p.playWhites();
                     p.score();
+
                     if (gameover == GAMEOVER.QUIT)
                     {
                         break;
