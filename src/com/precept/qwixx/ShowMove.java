@@ -34,14 +34,15 @@ class ShowMove extends JPanel {
     DisplayValue blueCount;
     
  
+    JLabel title;
     JLabel event;
     
     public SheetEntry thisOne = null;
     
-    public Qwixx.MOVETYPE type = Qwixx.MOVETYPE.WHITES;
+    public WhichTurn.TYPE type = WhichTurn.TYPE.WHITE;
     
 
-    public ShowMove (Player player, Qwixx.MOVETYPE type, SheetEntry thisOne) {
+    public ShowMove (Player player, WhichTurn.TYPE type, SheetEntry thisOne) {
         
         super();
         
@@ -58,15 +59,7 @@ class ShowMove extends JPanel {
             this.frame = null;
         }
 
-        if (type == Qwixx.MOVETYPE.COLORS)
-        {
-            this.type = type;
-        }
-        else
-        {
-            this.type = Qwixx.MOVETYPE.WHITES;
-        }
-   
+        this.type = type;
         this.thisOne = thisOne;
         
     }
@@ -80,7 +73,12 @@ class ShowMove extends JPanel {
         setBorder(BorderFactory.createLineBorder(Color.black));
 
         int fullWidth = 800;
-        int fullHeight = 300;
+        int fullHeight = 400;
+        
+        int left = 5;
+        int top = 5;
+        int idx = 0;
+        int diceGapLittle = 5;
         
         setSize(fullWidth, fullHeight);
         
@@ -127,52 +125,33 @@ class ShowMove extends JPanel {
         penalties = new DisplayValue(player.sheet.penalties, Color.white, false);
         penalties.buildAndShow();
 
-
-        String eventString;
-        StringBuffer sb = new StringBuffer();
+        // BUILD TITLE
         
-        if (thisOne == null)
-        {
-            if (type == Qwixx.MOVETYPE.WHITES || type == Qwixx.MOVETYPE.WHITES_CONSIDERING_COLORS)
-            {
-                sb.append("SKIPPED");
-            }
-            else if (type == Qwixx.MOVETYPE.COLORS)
-            {
-                sb.append("TOOK A PENALTY");
-            }
-            else
-            {
-                //
-            }
-        }
-        else
-        {
-            sb.append("TOOK ");
-
-            if (thisOne.color == Game.COLORS.RED) sb.append(" RED ");
-            if (thisOne.color == Game.COLORS.YELLOW) sb.append(" YELLOW ");
-            if (thisOne.color == Game.COLORS.GREEN) sb.append(" GREEN ");
-            if (thisOne.color == Game.COLORS.BLUE) sb.append(" BLUE ");
-            
-            sb.append(thisOne.val);
-        }
+        int titleWidth = 600;
+        int titleHeight = 50;
         
-        event = new JLabel(sb.toString());
-        event.setFont(Qwixx.myfont18);
-        event.setBackground(Color.white);
-        event.setOpaque(true);
-        event.setSize(400, 40);
-        event.setHorizontalAlignment(JLabel.CENTER);
-        event.setVerticalAlignment(JLabel.CENTER);        
-        add(event);
+        title = new JLabel(player.name + "'s " + type + " move");
+        title.setFont(Qwixx.myfont18);
+        title.setBackground(Color.white);
+        title.setOpaque(true);
+        title.setSize(titleWidth, titleHeight);
+        title.setHorizontalAlignment(JLabel.CENTER);
+        title.setVerticalAlignment(JLabel.CENTER);        
+        add(title);
 
-        int idx = 0;
-        int top = 5;
-        int left = 5;
-        int diceGapLittle = 5;
+        top = 5;
+        left = (fullWidth - 10 - titleWidth) / 2;
+        left = left - 20;
+        title.setBounds(left, top, titleWidth, titleHeight);
+        title.setVisible(true);
+
+
+        // REDS
+
+        top = top + titleHeight + 10;
+        left = 5;
         
-
+        
         redScore = new DisplayValue(player.sheet.redsScore, Color.white, false);
         redScore.setBounds(left, top, 50, 50);
         redScore.buildAndShow();
@@ -193,6 +172,7 @@ class ShowMove extends JPanel {
         redCount.buildAndShow();
         add(redCount);
         
+        // YELLOWS
         
         top = top + 55;
         left = 5;
@@ -219,6 +199,8 @@ class ShowMove extends JPanel {
         yellowCount.buildAndShow();
         add(yellowCount);
         
+        // GREENS
+        
 
         top = top + 55;
         left = 5;
@@ -244,6 +226,7 @@ class ShowMove extends JPanel {
         greenCount.buildAndShow();
         add(greenCount);
         
+        // BLUES
         
         top = top + 55;
         left = 5;
@@ -269,6 +252,7 @@ class ShowMove extends JPanel {
         blueCount.buildAndShow();
         add(blueCount);
         
+        // SCORE
         
         top = top + 60;
         left = 120;
@@ -288,6 +272,8 @@ class ShowMove extends JPanel {
         score.setBounds(left, top, 50, 50);
         score.buildAndShow();
         add(score);
+
+        // PENALTIES
 
         // top = top + 60;
         left = left + 50 + 50;
@@ -309,26 +295,67 @@ class ShowMove extends JPanel {
         penalties.buildAndShow();
         add(penalties);
 
+        // EVENT
+
+        left = 480;
+
+        int eventWidth = 300;
+        int eventHeight = 50;
         
-        left = 500;
-        event.setBounds(left, top, 250, 50);
+        String eventString;
+        StringBuffer sb = new StringBuffer();
+        
+        if (thisOne == null)
+        {
+            if (type == WhichTurn.TYPE.WHITE)
+            {
+                sb.append("SKIPPED");
+            }
+            else if (type == WhichTurn.TYPE.COLOR)
+            {
+                sb.append("TOOK A PENALTY");
+            }
+            else
+            {
+                //
+            }
+        }
+        else
+        {
+            sb.append("TOOK ");
+
+            if (thisOne.color == Game.COLORS.RED) sb.append(" RED ");
+            if (thisOne.color == Game.COLORS.YELLOW) sb.append(" YELLOW ");
+            if (thisOne.color == Game.COLORS.GREEN) sb.append(" GREEN ");
+            if (thisOne.color == Game.COLORS.BLUE) sb.append(" BLUE ");
+            
+            sb.append(thisOne.val);
+        }
+        
+        event = new JLabel(sb.toString());
+        event.setFont(Qwixx.myfont18);
+        event.setBackground(Color.white);
+        event.setOpaque(true);
+        event.setSize(eventWidth, eventHeight);
+        event.setHorizontalAlignment(JLabel.CENTER);
+        event.setVerticalAlignment(JLabel.CENTER);        
+        add(event);
+        
+        event.setBounds(left, top, eventWidth, eventHeight);
         event.setVisible(true);
 
+        // ALL DONE
         
-        top = top + 60;
-        left = 10;
-
-        
-        // SheetEntry highlightThis = player.findEntry(thisOne);
+       
         SheetEntry highlightThis = thisOne;
-        SheetEntry saveThis = thisOne;
+        // SheetEntry saveThis = thisOne;
         
         MoveSelect.HIGHLIGHT h = null;
-        if (type == Qwixx.MOVETYPE.COLORS)
+        if (type == WhichTurn.TYPE.COLOR)
         {
             h = MoveSelect.HIGHLIGHT.COLOR;
         }
-        if (type == Qwixx.MOVETYPE.WHITES || type == Qwixx.MOVETYPE.WHITES_CONSIDERING_COLORS) 
+        if (type == WhichTurn.TYPE.WHITE) 
         {
             h = MoveSelect.HIGHLIGHT.WHITE;
         }

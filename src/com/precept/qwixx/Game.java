@@ -147,13 +147,13 @@ public class Game {
             // any more players for this turn?
             if (orderedPlayers == null || orderedPlayers.size() == 0)
             {
-                System.out.println("takeMove: New Turn");
+                System.out.println("takeMove: no more moves on this roll");
                 // no more players for this turn, start a new turn
                 setNextPlayer();
                 System.out.println("takeMove: new current = " + current.name);
                 dice.roll();
                 table.rd.newDice();
-                System.out.println("takeMove: new Dice");
+                System.out.println("takeMove: new dice");
                 
                 orderedPlayers = getOrderedPlayers();
             }
@@ -162,85 +162,166 @@ public class Game {
             {
                 if (table != null) table.dispose();
                 System.out.println("ERROR: no players");
+                System.exit(-20);
             }
-
+            
             TurnMove m = orderedPlayers.remove(0);
             System.out.println("takeMove: working on " + m.player.name + " " + m.type);
-            TakeMove tm = new TakeMove(m);
-            tm.takeMove();
+            
+            // SETUP
+
+            WhichTurn.TYPE turnType = null;
+            String turnString = null;
+            if (m.type == Qwixx.MOVETYPE.COLORS)
+            {
+                turnType = WhichTurn.TYPE.COLOR;
+                turnString = "COLORS";
+            }
+            else if (m.type == Qwixx.MOVETYPE.WHITES)
+            {
+                turnType = WhichTurn.TYPE.WHITE;
+                turnString = "WHITES";
+            }
+            else if (m.type == Qwixx.MOVETYPE.WHITES_CONSIDERING_COLORS)
+            {
+                turnType = WhichTurn.TYPE.WHITE;
+                turnString = "WHITES CONSIDERING COLORS";
+            }
+            else
+            {
+                System.out.println("takeMove: bad type");
+                System.exit(-10);
+            }
+
+            // SET THE PLAYER TURN STATUS
+            table.ts.setPlayerTurn(m.player, turnType);
+            
+            if (m.player.strategy == Player.STRATEGY.Computer)
+            {
+                SheetEntry se = null;
+                
+                // GET AND PLAY THE MOVE
+                if (m.type == Qwixx.MOVETYPE.COLORS)
+                {
+                    se = m.player.playColors();
+                }
+                else if (m.type == Qwixx.MOVETYPE.WHITES)
+                {
+                    se = m.player.playWhites();
+                }
+                if (m.type == Qwixx.MOVETYPE.WHITES_CONSIDERING_COLORS)
+                {
+                    se = m.player.playWhitesConsideringColors();
+                }
+            
+                StringBuffer sb = new StringBuffer();
+                if (se == null)
+                {
+                    sb.append("<null>");
+                }
+                else
+                {
+                    sb.append("" + se.color + " " + se.val);
+                }
+                System.out.println("takeMove: player " + m.player.name + " " + turnString + " chose: " + sb.toString());
+
+                table.ps.update();
+
+                ShowMoveWait smw = new ShowMoveWait(m.player, turnType, se);
+                smw.showMoveWait();
+            }
+            else
+            {
+                
+                SheetEntry thisOne = null;
+                ArrayList<Move> whiteMoves = null;                
+                ArrayList<Move> colorMoves = null;                
+
+                if (m.type == Qwixx.MOVETYPE.WHITES)
+                {
+                    m.player.findWhiteMoves();
+                    whiteMoves = m.player.whiteMoves;
+                    colorMoves = null;
+                }
+                else if (m.type == Qwixx.MOVETYPE.WHITES_CONSIDERING_COLORS)
+                {
+                    m.player.findWhiteMoves();
+                    m.player.findColorMoves();
+                    whiteMoves = m.player.whiteMoves;
+                    colorMoves = m.player.colorMoves;
+                }
+                else // if (m.type == Qwixx.MOVETYPE.COLORS)
+                {
+                    m.player.findColorMoves();
+                    colorMoves = m.player.colorMoves;
+                    whiteMoves = null;
+                }
+
+                int top = 200;
+                int left = 530;
+
+                int pcmWidth = 800;
+                int pcmHeight = 400;
+
+                table.pcm = new PlayerChooseMove(m.player, m.type, whiteMoves, colorMoves);
+                table.pcm.build();
+                table.pcm.setBounds(left, top, pcmWidth, pcmHeight);
+                table.pcm.setVisible(true);
+                table.add(table.pcm);
+
+                WaitForMove wfm = new WaitForMove(m);
+                wfm.waitForMove();
+                
+                /*
+                if (m.type == Qwixx.MOVETYPE.WHITES)
+                {
+                    m.player.findWhiteMoves();
+                    thisOne = m.player.chooseWhiteHuman();
+                    if (thisOne == null)
+                    {
+                    }
+                    else
+                    {
+                        thisOne.markIt();
+                    }
+                }
+                else if (m.type == Qwixx.MOVETYPE.WHITES_CONSIDERING_COLORS)
+                {
+                    m.player.findWhiteMoves();
+                    m.player.findColorMoves();
+                    thisOne = m.player.chooseWhiteConsideringColorsHuman();
+                    if (thisOne == null)
+                    {
+                    }
+                    else
+                    {
+                        thisOne.markIt();
+                    }
+                }
+                else // if (m.type == Qwixx.MOVETYPE.COLORS)
+                {
+                    m.player.findColorMoves();
+                    thisOne = m.player.chooseColorHuman();
+                    if (thisOne == null)
+                    {
+                        m.player.sheet.penalties++;
+                    }
+                    else
+                    {
+                        thisOne.markIt();
+                    }
+                }
+                m.player.score();
+                */
+
+            }
+            
         }
         else
         {
             
         }
     }
-    
-    /*
-    public void takeTurn()
-    {
-
-        
-        if (orderedPlayers == null || orderedPlayers.size() == 0)
-        {
-            orderedPlayers = getOrderedPlayers();
-            dice.roll();
-        }
-        
-        ArrayList<TurnMove> 
-        
-        
-        
-        for (TurnMove m : orderedPlayers)
-        {
-            if (gameover != GAMEOVER.QUIT)
-            {
-                if (p != current)
-                {
-                    SheetEntry se = takeMove(p, Qwixx.MOVETYPE.WHITES);
-                    
-                    *
-                    p.playWhites();
-                    p.score();
-                    *
-
-                    if (gameover == GAMEOVER.QUIT)
-                    {
-                        break;
-                    }
-                }
-                else
-                {
-                    takeMove(p, Qwixx.MOVETYPE.WHITES_CONSIDEING_COLORS);
-                    *
-                    p.playWhitesConsideringColors();
-                    p.score();
-                    *
-                    if (gameover == GAMEOVER.QUIT)
-                    {
-                        break;
-                    }
-                    
-                    takeMove(p, Qwixx.MOVETYPE.COLORS);
-                    
-                    *
-                    p.playColors();
-                    p.score();
-                    
-                    *
-                    if (gameover == GAMEOVER.QUIT)
-                    {
-                        break;
-                    }
-                }
-            }
-        }
-        
-        checkForNewLock();
-        
-        setNextPlayer();
-        
-    }
-    */
     
     public void checkForNewLock()
     {
@@ -366,6 +447,11 @@ public class Game {
         ArrayList<Player> players = new ArrayList<Player>();
     
         Player p = null;
+
+        p = new Player(game, "Scott", Player.STRATEGY.Human);
+        players.add(p);
+        p = new Player(game, "Nina", Player.STRATEGY.Computer);
+        players.add(p);
         
         /*
         p = new Player(game, "Scott", Player.STRATEGY.Human);
@@ -376,12 +462,16 @@ public class Game {
         players.add(p);
         */
         
+        /*
         p = new Player(game, "Scott", Player.STRATEGY.Computer);
         players.add(p);
         p = new Player(game, "Nina", Player.STRATEGY.Computer);
         players.add(p);
         p = new Player(game, "Sam", Player.STRATEGY.Computer);
         players.add(p);
+        p = new Player(game, "Hunter", Player.STRATEGY.Computer);
+        players.add(p);
+        */
         
         return players;
     }    

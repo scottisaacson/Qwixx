@@ -15,10 +15,10 @@ import java.awt.event.*;
 import java.awt.image.*;
 import java.util.*;
 
-class PlayerChooseMove extends JDialog {
+class PlayerChooseMove extends JPanel {
 
     public static final Dimension size50 = new Dimension(50, 50);
-    public static final Dimension size30 = new Dimension(30, 30);
+    // public static final Dimension size30 = new Dimension(30, 30);
     
     Game game;
     Frame frame;
@@ -31,61 +31,84 @@ class PlayerChooseMove extends JDialog {
     DisplayValue dvScore;
     DisplayValue dvPenalties;
     JButton skip;
-    JButton quit;
-    boolean isquit = false;
+    JLabel title;
+    
+    boolean isselected = false;
+    boolean isskip = false;
+    
     boolean consider = false;
     
     public SheetEntry thisOne = null;
     public ArrayList<Move> whiteMoves = null;
     public ArrayList<Move> colorMoves = null;
     public Qwixx.MOVETYPE type = Qwixx.MOVETYPE.WHITES;
+    public WhichTurn.TYPE turnType = null;
     
 
+    
     public PlayerChooseMove (Player player, Qwixx.MOVETYPE type, ArrayList<Move> whiteMoves, ArrayList<Move> colorMoves) {
         
-        super(player.game.frame, "Choose Move", Dialog.ModalityType.APPLICATION_MODAL);
-        //super(player.game.frame, "Choose Move");
+        super();
         
-        this.player = player;
-        this.game = player.game;
-        this.frame = player.game.frame;
+        if (player == null)
+        {
+            this.player = null;
+            this.game = null;
+            this.frame = null;
+        }
+        else
+        {
+            this.player = player;
+            this.game = player.game;
+            this.frame = player.game.frame;
+        }
 
-        this.consider = true;
-        this.whiteMoves = whiteMoves;
-        this.colorMoves = colorMoves;
-        this.type = type;
-        
-    }
-
-    public PlayerChooseMove (Player player, Qwixx.MOVETYPE type, ArrayList<Move> moves) {
-        
-        super(player.game.frame, "Choose Move", Dialog.ModalityType.APPLICATION_MODAL);
-        
-        this.player = player;
-        this.game = player.game;
-        this.frame = player.game.frame;
-
-        this.consider = false;
         this.type = type;
         
         if (type == Qwixx.MOVETYPE.COLORS)
         {
-            this.colorMoves = moves;
+            this.colorMoves = colorMoves;
             this.whiteMoves = null;
-        }
-        if (type == Qwixx.MOVETYPE.WHITES)
+            this.turnType = WhichTurn.TYPE.COLOR;
+            this.consider = false;
+    }
+        else if (type == Qwixx.MOVETYPE.WHITES)
         {
-            this.whiteMoves = moves;
+            this.whiteMoves = whiteMoves;
             this.colorMoves = null;
+            this.turnType = WhichTurn.TYPE.WHITE;
+            this.consider = false;
         }
+        else if (type == Qwixx.MOVETYPE.WHITES_CONSIDERING_COLORS)
+        {
+            this.whiteMoves = whiteMoves;
+            this.colorMoves = colorMoves;
+            this.turnType = WhichTurn.TYPE.WHITE;
+            this.consider = true;
+        }
+ 
     }
     
-    public void buildAndShow () {
+    public void build () 
+    {
         
-        Container pane = getContentPane();
-        pane.setBackground(Qwixx.myback1);
-        // setLocationRelativeTo(null);
+        setBackground(Qwixx.myback1);
+        setLayout(null);
+        setBorder(BorderFactory.createLineBorder(Color.black));
 
+        int fullWidth = 800;
+        int fullHeight = 400;
+        
+        setSize(fullWidth, fullHeight);
+        
+        if (player == null) return;
+
+        int left = 5;
+        int top = 5;
+        int idx = 0;
+        int diceGapLittle = 5;
+        
+        
         MoveSelect ms = null;
         Color c = null;
         
@@ -93,7 +116,7 @@ class PlayerChooseMove extends JDialog {
         for (SheetEntry se : player.sheet.reds)
         {
             c = Qwixx.myred;
-            ms = new MoveSelect(player, se.val, c, se.marked, type);
+            ms = new MoveSelect(player, se.val, c, se.marked, turnType);
             reds.add(ms);
         }
 
@@ -101,7 +124,7 @@ class PlayerChooseMove extends JDialog {
         for (SheetEntry se : player.sheet.yellows)
         {
             c = Qwixx.myyellow;
-            ms = new MoveSelect(player, se.val, c, se.marked, type);
+            ms = new MoveSelect(player, se.val, c, se.marked, turnType);
             yellows.add(ms);
         }
 
@@ -109,7 +132,7 @@ class PlayerChooseMove extends JDialog {
         for (SheetEntry se : player.sheet.greens)
         {
             c = Qwixx.mygreen;
-            ms = new MoveSelect(player, se.val, c, se.marked, type);
+            ms = new MoveSelect(player, se.val, c, se.marked, turnType);
             greens.add(ms);
         }
 
@@ -117,7 +140,7 @@ class PlayerChooseMove extends JDialog {
         for (SheetEntry se : player.sheet.blues)
         {
             c = Qwixx.myblue;
-            ms = new MoveSelect(player, se.val, c, se.marked, type);
+            ms = new MoveSelect(player, se.val, c, se.marked, turnType);
             blues.add(ms);
         }
         
@@ -127,13 +150,6 @@ class PlayerChooseMove extends JDialog {
         
         dvPenalties = new DisplayValue(player.sheet.penalties, Color.white, false);
         dvScore.buildAndShow();
-
-        // Create a Quit Game Button
-        quit = new JButton();
-        quit.setText("QUIT GAME");
-        quit.setFont(Qwixx.myfont18);
-        // set action listener on the button
-        quit.addActionListener(new PCMQuitActionListener());        
 
         
         // Create a button
@@ -151,53 +167,30 @@ class PlayerChooseMove extends JDialog {
         skip.addActionListener(new PCMSkipActionListener());        
 
         
-        int top = 5;
-        int left = 5;
-        int diceGapLittle = 5;
+        // BUILD TITLE
         
-        pane.setLayout(null);
-        Insets paneInsets = pane.getInsets();
-
-        String nameTurnString = null;
-        String typeString = null;
-        if (type == Qwixx.MOVETYPE.COLORS)
-        {
-            typeString = "COLOR";
-        }
-        else
-        {
-            typeString = "WHITE";
-        }
-        String nameMoveString = null;
-                
-        nameTurnString = player.game.current.name + "'s Roll";
-        nameMoveString = player.name + "'s " + typeString + " Move";
-
-        JLabel nameTurn = new JLabel(nameTurnString);
-        nameTurn.setFont(Qwixx.myfont18);
-        nameTurn.setBackground(Color.white);
-        nameTurn.setOpaque(true);
-        nameTurn.setBounds(left + 50, top, 250, 40);
-        nameTurn.setSize(250, 40);
-        nameTurn.setHorizontalAlignment(JLabel.CENTER);
-        nameTurn.setVerticalAlignment(JLabel.CENTER);        
-        nameTurn.setVisible(true);
-        pane.add(nameTurn);
-
-        JLabel nameMove = new JLabel(nameMoveString);
-        nameMove.setFont(Qwixx.myfont18);
-        nameMove.setBackground(Color.white);
-        nameMove.setOpaque(true);
-        nameMove.setBounds(left + 400, top, 250, 40);
-        nameMove.setSize(250, 40);
-        nameMove.setHorizontalAlignment(JLabel.CENTER);
-        nameMove.setVerticalAlignment(JLabel.CENTER);        
-        nameMove.setVisible(true);
-        pane.add(nameMove);
+        int titleWidth = 600;
+        int titleHeight = 50;
         
-        int idx = 0;
+        title = new JLabel(player.name + "'s " + type + " move");
+        title.setFont(Qwixx.myfont18);
+        title.setBackground(Color.white);
+        title.setOpaque(true);
+        title.setSize(titleWidth, titleHeight);
+        title.setHorizontalAlignment(JLabel.CENTER);
+        title.setVerticalAlignment(JLabel.CENTER);        
+        add(title);
+
+        top = 5;
+        left = (fullWidth - 10 - titleWidth) / 2;
+        left = left - 20;
+        title.setBounds(left, top, titleWidth, titleHeight);
+        title.setVisible(true);
+
 
         top = top + 55;
+        
+        // REDS
         
         left = 5;
         idx = 0;
@@ -205,14 +198,14 @@ class PlayerChooseMove extends JDialog {
         DisplayValue rscore = new DisplayValue(player.sheet.redsScore, Color.white, false);
         rscore.setBounds(left, top, 50, 50);
         rscore.buildAndShow();
-        pane.add(rscore);
+        add(rscore);
 
         left = left + 75;
         for (MoveSelect gs : reds)
         {
             gs.setBounds(left + (55 * idx), top, 50, 50);
             gs.setVisible(true);
-            pane.add(gs);
+            add(gs);
             idx++;
         }
 
@@ -220,8 +213,9 @@ class PlayerChooseMove extends JDialog {
         DisplayValue rcount = new DisplayValue(player.sheet.redsMarked, Color.white, false);
         rcount.setBounds(left, top, 50, 50);
         rcount.buildAndShow();
-        pane.add(rcount);
+        add(rcount);
         
+        // YELLOWS
         
         top = top + 55;
         left = 5;
@@ -230,7 +224,7 @@ class PlayerChooseMove extends JDialog {
         DisplayValue yscore = new DisplayValue(player.sheet.yellowsScore, Color.white, false);
         yscore.setBounds(left, top, 50, 50);
         yscore.buildAndShow();
-        pane.add(yscore);
+        add(yscore);
         
         
         left = left + 75;
@@ -238,7 +232,7 @@ class PlayerChooseMove extends JDialog {
         {
             gs.setBounds(left + (55 * idx), top, 50, 50);
             gs.setVisible(true);
-            pane.add(gs);
+            add(gs);
             idx++;
         }
 
@@ -246,10 +240,11 @@ class PlayerChooseMove extends JDialog {
         DisplayValue ycount = new DisplayValue(player.sheet.yellowsMarked, Color.white, false);
         ycount.setBounds(left, top, 50, 50);
         ycount.buildAndShow();
-        pane.add(ycount);
+        add(ycount);
         
 
-        
+        // GREENS
+     
         top = top + 55;
         left = 5;
         idx = 0;
@@ -257,14 +252,14 @@ class PlayerChooseMove extends JDialog {
         DisplayValue gscore = new DisplayValue(player.sheet.greensScore, Color.white, false);
         gscore.setBounds(left, top, 50, 50);
         gscore.buildAndShow();
-        pane.add(gscore);
+        add(gscore);
         
         left = left + 75;
         for (MoveSelect gs : greens)
         {
             gs.setBounds(left + (55 * idx), top, 50, 50);
             gs.setVisible(true);
-            pane.add(gs);
+            add(gs);
             idx++;
         }
 
@@ -272,8 +267,9 @@ class PlayerChooseMove extends JDialog {
         DisplayValue gcount = new DisplayValue(player.sheet.greensMarked, Color.white, false);
         gcount.setBounds(left, top, 50, 50);
         gcount.buildAndShow();
-        pane.add(gcount);
-        
+        add(gcount);
+
+        // BLUES
         
         top = top + 55;
         left = 5;
@@ -282,14 +278,14 @@ class PlayerChooseMove extends JDialog {
         DisplayValue bscore = new DisplayValue(player.sheet.bluesScore, Color.white, false);
         bscore.setBounds(left, top, 50, 50);
         bscore.buildAndShow();
-        pane.add(bscore);
+        add(bscore);
         
         left = left + 75;
         for (MoveSelect gs : blues)
         {
             gs.setBounds(left + (55 * idx), top, 50, 50);
             gs.setVisible(true);
-            pane.add(gs);
+            add(gs);
             idx++;
         }
 
@@ -297,8 +293,9 @@ class PlayerChooseMove extends JDialog {
         DisplayValue bcount = new DisplayValue(player.sheet.bluesMarked, Color.white, false);
         bcount.setBounds(left, top, 50, 50);
         bcount.buildAndShow();
-        pane.add(bcount);
+        add(bcount);
         
+        // SCORE
         
         top = top + 60;
         left = 120;
@@ -312,13 +309,15 @@ class PlayerChooseMove extends JDialog {
         scoreLabel.setHorizontalAlignment(JLabel.CENTER);
         scoreLabel.setVerticalAlignment(JLabel.CENTER);        
         scoreLabel.setVisible(true);
-        pane.add(scoreLabel);
+        add(scoreLabel);
 
         left = left + 65;
         dvScore.setBounds(left, top, 50, 50);
         dvScore.buildAndShow();
-        pane.add(dvScore);
+        add(dvScore);
 
+        // PENALTIES
+        
         // top = top + 60;
         left = left + 50 + 50;
         
@@ -331,13 +330,13 @@ class PlayerChooseMove extends JDialog {
         penaltiesLabel.setHorizontalAlignment(JLabel.CENTER);
         penaltiesLabel.setVerticalAlignment(JLabel.CENTER);        
         penaltiesLabel.setVisible(true);
-        pane.add(penaltiesLabel);
+        add(penaltiesLabel);
  
         left = left + 100;
 
         dvPenalties.setBounds(left, top, 50, 50);
         dvPenalties.buildAndShow();
-        pane.add(dvPenalties);
+        add(dvPenalties);
         
         // Highlight the moves
         // if consider, then highlight both whites with WHITE and colors with COLOR
@@ -365,49 +364,11 @@ class PlayerChooseMove extends JDialog {
         
         top = top + 60;
 
-        quit.setBounds(10, top, 150, 50);
-        quit.setVisible(true);
-        pane.add(quit);
-        
         skip.setBounds(500, top, 250, 50);
         skip.setVisible(true);
-        pane.add(skip);
+        add(skip);
         
-        
-        Insets outerInsets = getInsets();
-        setSize(
-                800 + outerInsets.left + outerInsets.right,
-                450 + outerInsets.top + outerInsets.bottom);
-
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        //this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);                
-        this.setLocation(400, (dim.height/2-this.getSize().height/2) + 100);                
-
-        
-        /*
-        if  (
-                type == Move.MOVETYPE.COLORS &&
-                player.strategy == Player.STRATEGY.Human &&
-                colorMoves.size() == 0
-            )
-        {
-            NoColorMovesDialog pd = new NoColorMovesDialog(game);
-            pd.setName("No Color Moves");
-            pd.setLocationRelativeTo(null);
-            pd.setSize(300, 300);
-            pd.buildAndShow();
-            //pd.setVisible(false);
-            
-            pd.dispose();
-        }
-        else
-        {
-            setVisible(true);
-        }
-        */
-
-        setVisible(true);
-        
+        setVisible(false);
 
     }
 
@@ -468,19 +429,10 @@ class PlayerChooseMove extends JDialog {
 
         //close and dispose of the window.
         public void actionPerformed(ActionEvent e) {
-            isquit = false;
-            setVisible(false);
+            isskip = true;
         }
     }    
 
-    class PCMQuitActionListener implements ActionListener {
-
-        //close and dispose of the window.
-        public void actionPerformed(ActionEvent e) {
-            isquit = true;
-            setVisible(false);
-        }
-    }    
 
 }
 

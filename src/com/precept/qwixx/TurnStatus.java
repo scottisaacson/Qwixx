@@ -39,7 +39,7 @@ public class TurnStatus extends JPanel {
         setBackground(Qwixx.myback1);
         setBorder(BorderFactory.createLineBorder(Color.black));
 
-        int fullWidth = 820;
+        int fullWidth = 850;
         int fullHeight = 120;
                 
         setSize(fullWidth, fullHeight);
@@ -90,7 +90,7 @@ public class TurnStatus extends JPanel {
             }
             else if (tsp.player.equals(p.game.current))
             {
-                tsp.name.setBackground(Color.orange);
+                tsp.name.setBackground(Color.green);
                 tsp.color.color = Color.gray;
                 tsp.white.color = Color.gray;
             }

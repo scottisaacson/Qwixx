@@ -77,7 +77,6 @@ public class Player {
 
         findWhiteMoves();
         
-        // Based on Strategy, find the best move
         SheetEntry thisOne = null;
         if (strategy == STRATEGY.Human)
         {
@@ -91,40 +90,12 @@ public class Player {
         if (thisOne == null)
         {
             score();
-            /*
-            if (game.interactive && strategy == Player.STRATEGY.Computer)
-            {
-                var pcam = new PlayerChoseAMove(this, Qwixx.MOVETYPE.WHITES, thisOne);
-                pcam.buildAndShow();
-
-                if (pcam.isQuit)
-                {
-                    game.gameover = Game.GAMEOVER.QUIT;
-                }
-                pcam.dispose();
-            }
-            */
-
             return thisOne;
         }
 
         // MarkIt
         thisOne.markIt();
         score();
-        
-        /*
-        if (game.interactive && strategy == Player.STRATEGY.Computer)
-        {
-            var pcam = new PlayerChoseAMove(this, Qwixx.MOVETYPE.WHITES, thisOne);
-            pcam.buildAndShow();
-
-            if (pcam.isQuit)
-            {
-                game.gameover = Game.GAMEOVER.QUIT;
-            }
-            pcam.dispose();
-        }
-        */
         
         return thisOne;
         
@@ -136,7 +107,6 @@ public class Player {
         findWhiteMoves();
         findColorMoves();
         
-        // Based on Strategy, find the best move
         SheetEntry thisOne = null;
         if (strategy == STRATEGY.Human)
         {
@@ -150,19 +120,6 @@ public class Player {
         if (thisOne == null)
         {
             score();
-            /*
-            if (game.interactive && strategy == Player.STRATEGY.Computer)
-            {
-                var pcam = new PlayerChoseAMove(this, Qwixx.MOVETYPE.WHITES, thisOne);
-                pcam.buildAndShow();
-
-                if (pcam.isQuit)
-                {
-                    game.gameover = Game.GAMEOVER.QUIT;
-                }
-                pcam.dispose();
-            }
-            */
             return thisOne;
         }
 
@@ -170,20 +127,6 @@ public class Player {
         thisOne.markIt();
         score();
 
-        /*
-        if (game.interactive && strategy == Player.STRATEGY.Computer)
-        {
-            var pcam = new PlayerChoseAMove(this, Qwixx.MOVETYPE.WHITES, thisOne);
-            pcam.buildAndShow();
-
-            if (pcam.isQuit)
-            {
-                game.gameover = Game.GAMEOVER.QUIT;
-            }
-            pcam.dispose();
-        }
-        */
-        
         return thisOne;
         
     }
@@ -210,40 +153,12 @@ public class Player {
             sheet.penalties++;
             score();
 
-            /*
-            if (game.interactive && strategy == Player.STRATEGY.Computer)
-            {
-                var pcam = new PlayerChoseAMove(this, Qwixx.MOVETYPE.COLORS, thisOne);
-                pcam.buildAndShow();
-
-                if (pcam.isQuit)
-                {
-                    game.gameover = Game.GAMEOVER.QUIT;
-                }
-                pcam.dispose();
-            }
-            */
-
             return thisOne;
         }
         
         // MarkIt
         thisOne.markIt();
         score();
-        
-        /*
-        if (game.interactive && strategy == Player.STRATEGY.Computer)
-        {
-            var pcam = new PlayerChoseAMove(this, Qwixx.MOVETYPE.COLORS, thisOne);
-            pcam.buildAndShow();
-
-            if (pcam.isQuit)
-            {
-                game.gameover = Game.GAMEOVER.QUIT;
-            }
-            pcam.dispose();
-        }
-        */
 
         return thisOne;
         
@@ -581,32 +496,16 @@ public class Player {
             theseMoves = whiteMoves;
         }
 
-        PlayerChooseMove playerChooseMove = null;
         
-        if (consider == true)
-        {
-            playerChooseMove = new PlayerChooseMove(this, type, whiteMoves, colorMoves);
-        }
-        else
-        {
-            playerChooseMove = new PlayerChooseMove(this, type, theseMoves);
-        }
-
-        playerChooseMove.buildAndShow();
         
-        thisOne = playerChooseMove.thisOne;
-        if (playerChooseMove.isquit)
-        {
-            game.gameover = Game.GAMEOVER.QUIT;
-        }
-
-        playerChooseMove.dispose();
+        
             
         return thisOne;
 
     }
 
-    
+
+    /*
     public SheetEntry getHumanMove(Qwixx.MOVETYPE type)
     {
         
@@ -810,6 +709,7 @@ public class Player {
         
         return thisOne;
     }
+    */
     
 
     // Computer

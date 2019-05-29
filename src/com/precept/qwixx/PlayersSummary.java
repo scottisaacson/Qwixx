@@ -43,7 +43,7 @@ public class PlayersSummary extends JPanel {
         players = new ArrayList<PlayerSummary>();
 
         int fullWidth = 460;
-        int fullHeight = (size * 50) + 40;
+        int fullHeight = (size * 50) + 50;
                 
         setSize(fullWidth, fullHeight);
 
@@ -96,6 +96,7 @@ public class PlayersSummary extends JPanel {
         }
 
         invalidate();
+        repaint();
         setVisible(true);
 
     }

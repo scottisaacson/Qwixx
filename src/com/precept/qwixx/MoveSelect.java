@@ -23,7 +23,7 @@ class MoveSelect extends JPanel
         NEITHER
     };
     
-    Qwixx.MOVETYPE type;
+    WhichTurn.TYPE type;
     Color back;
     public HIGHLIGHT h;
     public boolean marked;
@@ -35,7 +35,7 @@ class MoveSelect extends JPanel
     public static final Dimension dp = new Dimension(50,50);
     public static final Dimension d30 = new Dimension(30,30);
     
-    public MoveSelect(Player p, int val, Color back, boolean m, Qwixx.MOVETYPE type)
+    public MoveSelect(Player p, int val, Color back, boolean m, WhichTurn.TYPE type)
     {
         
         super();
@@ -260,12 +260,13 @@ class MoveSelectListener implements MouseListener {
     public void mouseClicked(MouseEvent e) {
 
         MoveSelect ms = (MoveSelect) e.getComponent();
+        PlayerChooseMove pcm = (PlayerChooseMove) ms.getParent();
 
+        /*
         Container c1 = ms.getParent();   // Panel
         Container c2 = c1.getParent();   // Display
         Container c3 = c2.getParent();   // Root
-
-        PlayerChooseMove dialog = (PlayerChooseMove) c3.getParent();
+        */
          
         int val = ms.val;
         Game.COLORS c = null;
@@ -274,70 +275,54 @@ class MoveSelectListener implements MouseListener {
         if (ms.back.equals(Qwixx.mygreen)) c = Game.COLORS.GREEN;
         if (ms.back.equals(Qwixx.myblue)) c = Game.COLORS.BLUE;
         
-        if (c != null)
+        pcm.thisOne = ms.player.sheet.findEntry(c, val);
+
+        boolean goodMove = false;
+        ArrayList<Move> moves = null;
+        if (ms.type == WhichTurn.TYPE.COLOR)
         {
-            dialog.thisOne = ms.player.sheet.findEntry(c, val);
+            moves = ms.player.colorMoves;
         }
         else
         {
-            dialog.thisOne = null;
+            moves = ms.player.whiteMoves;
         }
 
-        if (dialog.thisOne != null)
+        for (Move m : moves)
         {
+            if (c == m.se.color && val == m.se.val)
+            {
+                goodMove = true;
+            }
+        }
 
-            /*
-            // print it for fun
-            if (dialog.thisOne != null)
-            {
-                dialog.thisOne.print();
-            }
-            else
-            {
-                System.out.println("NONE SELECTED");
-            }
-            */
-            
-            SheetEntry se = dialog.thisOne;
-            
-            boolean goodMove = false;
-            ArrayList<Move> moves = null;
-            if (ms.type == Qwixx.MOVETYPE.COLORS)
-            {
-                moves = ms.player.colorMoves;
-            }
-            else
-            {
-                moves = ms.player.whiteMoves;
-            }
-            
-            for (Move m : moves)
-            {
-                if (c == m.se.color && val == m.se.val)
-                {
-                    goodMove = true;
-                }
-            }
-    
-            if (goodMove == false)
-            {
-                dialog.thisOne = null; // we did not select valid one, keep waiting
-            }
-            else
-            {
-                dialog.setVisible(false);
-            }
+        if (goodMove == false)
+        {
+            // we did not select valid one, keep waiting                
+            pcm.thisOne = null;
+            pcm.isselected = false;
+            pcm.isskip = false;
+        }
+        else
+        {
+            // we found a valid one, keep waiting                
+            pcm.isselected = true;
+            pcm.isskip = false;
         }
     }
+
+
     public void mousePressed(MouseEvent e) {
 
         MoveSelect ms = (MoveSelect) e.getComponent();
 
+        PlayerChooseMove pcm = (PlayerChooseMove) ms.getParent();
+
+        /*
         Container c1 = ms.getParent();   // Panel
         Container c2 = c1.getParent();   // Display
         Container c3 = c2.getParent();   // Root
-
-        PlayerChooseMove dialog = (PlayerChooseMove) c3.getParent();
+        */
          
         int val = ms.val;
         Game.COLORS c = null;
@@ -346,62 +331,44 @@ class MoveSelectListener implements MouseListener {
         if (ms.back.equals(Qwixx.mygreen)) c = Game.COLORS.GREEN;
         if (ms.back.equals(Qwixx.myblue)) c = Game.COLORS.BLUE;
         
-        if (c != null)
+        pcm.thisOne = ms.player.sheet.findEntry(c, val);
+
+        boolean goodMove = false;
+        ArrayList<Move> moves = null;
+        if (ms.type == WhichTurn.TYPE.COLOR)
         {
-            dialog.thisOne = ms.player.sheet.findEntry(c, val);
+            moves = ms.player.colorMoves;
         }
         else
         {
-            dialog.thisOne = null;
+            moves = ms.player.whiteMoves;
         }
 
-        if (dialog.thisOne != null)
+        for (Move m : moves)
         {
+            if (c == m.se.color && val == m.se.val)
+            {
+                goodMove = true;
+            }
+        }
 
-            /*
-            // print it for fun
-            if (dialog.thisOne != null)
-            {
-                dialog.thisOne.print();
-            }
-            else
-            {
-                System.out.println("NONE SELECTED");
-            }
-            */
-            
-            SheetEntry se = dialog.thisOne;
-            
-            boolean goodMove = false;
-            ArrayList<Move> moves = null;
-            if (ms.type == Qwixx.MOVETYPE.COLORS)
-            {
-                moves = ms.player.colorMoves;
-            }
-            else
-            {
-                moves = ms.player.whiteMoves;
-            }
-            
-            for (Move m : moves)
-            {
-                if (c == m.se.color && val == m.se.val)
-                {
-                    goodMove = true;
-                }
-            }
-    
-            if (goodMove == false)
-            {
-                dialog.thisOne = null; // we did not select valid one, keep waiting
-            }
-            else
-            {
-                dialog.setVisible(false);
-            }
+        if (goodMove == false)
+        {
+            // we did not select valid one, keep waiting                
+            pcm.thisOne = null;
+            pcm.isselected = false;
+            pcm.isskip = false;
+        }
+        else
+        {
+            // we found a valid one, keep waiting                
+            pcm.isselected = true;
+            pcm.isskip = false;
         }
 
     }
+
+
     public void mouseReleased(MouseEvent e) {
     }
     public void mouseEntered(MouseEvent e) {

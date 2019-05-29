@@ -38,6 +38,7 @@ class PlayerChoseAMove extends JDialog {
     public ArrayList<Move> whiteMoves = null;
     public ArrayList<Move> colorMoves = null;
     public Qwixx.MOVETYPE type = Qwixx.MOVETYPE.WHITES;
+    public WhichTurn.TYPE turnType = null;
     
 
     public PlayerChoseAMove (Player player, Qwixx.MOVETYPE type, SheetEntry se) {
@@ -54,6 +55,7 @@ class PlayerChoseAMove extends JDialog {
         this.colorMoves = colorMoves;
         this.type = type;
         this.thisOne = se;
+        this.turnType = WhichTurn.TYPE.COLOR;
         
     }
 
@@ -72,7 +74,7 @@ class PlayerChoseAMove extends JDialog {
         for (SheetEntry se : player.sheet.reds)
         {
             c = Qwixx.myred;
-            ms = new MoveSelect(player, se.val, c, se.marked, type);
+            ms = new MoveSelect(player, se.val, c, se.marked, turnType);
             reds.add(ms);
         }
 
@@ -80,7 +82,7 @@ class PlayerChoseAMove extends JDialog {
         for (SheetEntry se : player.sheet.yellows)
         {
             c = Qwixx.myyellow;
-            ms = new MoveSelect(player, se.val, c, se.marked, type);
+            ms = new MoveSelect(player, se.val, c, se.marked, turnType);
             yellows.add(ms);
         }
 
@@ -88,7 +90,7 @@ class PlayerChoseAMove extends JDialog {
         for (SheetEntry se : player.sheet.greens)
         {
             c = Qwixx.mygreen;
-            ms = new MoveSelect(player, se.val, c, se.marked, type);
+            ms = new MoveSelect(player, se.val, c, se.marked, turnType);
             greens.add(ms);
         }
 
@@ -96,7 +98,7 @@ class PlayerChoseAMove extends JDialog {
         for (SheetEntry se : player.sheet.blues)
         {
             c = Qwixx.myblue;
-            ms = new MoveSelect(player, se.val, c, se.marked, type);
+            ms = new MoveSelect(player, se.val, c, se.marked, turnType);
             blues.add(ms);
         }
         

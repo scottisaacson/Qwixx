@@ -31,6 +31,10 @@ class ShowSheet extends JPanel {
     DisplayValue greenCount;
     DisplayValue blueCount;
     
+    JLabel title;
+    
+    
+    
 
     public ShowSheet (Player player) {
         
@@ -59,13 +63,18 @@ class ShowSheet extends JPanel {
         setBackground(Qwixx.myback1);
         setBorder(BorderFactory.createLineBorder(Color.black));
 
+
         int fullWidth = 800;
-        int fullHeight = 300;
+        int fullHeight = 400;
+        
+        int left = 5;
+        int top = 5;
+        int idx = 0;
+        int diceGapLittle = 5;
         
         setSize(fullWidth, fullHeight);
         
         if (player == null) return;
-
         
         DisplayValue ms = null;
         Color c = null;
@@ -109,12 +118,32 @@ class ShowSheet extends JPanel {
         penalties.buildAndShow();
 
 
-        int idx = 0;
-        int top = 5;
-        int left = 5;
-        int diceGapLittle = 5;
+        // BUILD TITLE
         
+        int titleWidth = 600;
+        int titleHeight = 40;
+        
+        title = new JLabel(player.name + "'s Sheet");
+        title.setFont(Qwixx.myfont18);
+        title.setBackground(Color.white);
+        title.setOpaque(true);
+        title.setSize(titleWidth, titleHeight);
+        title.setHorizontalAlignment(JLabel.CENTER);
+        title.setVerticalAlignment(JLabel.CENTER);        
+        add(title);
 
+        top = 5;
+        left = (fullWidth - 10 - titleWidth) / 2;
+        left = left - 20;
+        title.setBounds(left, top, titleWidth, titleHeight);
+        title.setVisible(true);
+
+        
+        // REDS
+
+        top = top + titleHeight + 10;
+        left = 5;
+        
         redScore = new DisplayValue(player.sheet.redsScore, Color.white, false);
         redScore.setBounds(left, top, 50, 50);
         redScore.buildAndShow();
@@ -135,6 +164,9 @@ class ShowSheet extends JPanel {
         redCount.buildAndShow();
         add(redCount);
         
+
+        // YELLOWS
+
         
         top = top + 55;
         left = 5;
@@ -161,6 +193,7 @@ class ShowSheet extends JPanel {
         yellowCount.buildAndShow();
         add(yellowCount);
         
+        // GREENS
 
         top = top + 55;
         left = 5;
@@ -186,6 +219,7 @@ class ShowSheet extends JPanel {
         greenCount.buildAndShow();
         add(greenCount);
         
+        // BLUES
         
         top = top + 55;
         left = 5;
@@ -211,6 +245,8 @@ class ShowSheet extends JPanel {
         blueCount.buildAndShow();
         add(blueCount);
         
+        // SCORE
+
         
         top = top + 60;
         left = 120;
@@ -231,6 +267,9 @@ class ShowSheet extends JPanel {
         score.buildAndShow();
         add(score);
 
+        // PENALTIES
+
+        
         // top = top + 60;
         left = left + 50 + 50;
         

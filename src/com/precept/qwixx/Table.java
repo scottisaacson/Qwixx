@@ -28,11 +28,14 @@ class Table extends JDialog {
     PlayersSummary ps;
     TurnStatus ts;
     ShowSheet ss;
+    PlayerChooseMove pcm;
     ShowMove sm;
     
     JButton quit;
+    JButton ok;
 
     boolean isquit = false;
+    boolean isOK = false;
     
     
     
@@ -47,6 +50,7 @@ class Table extends JDialog {
         ts = null;
         sm = null;
         ss = null;
+        pcm = null;
     }
 
     public void buildAndShow () 
@@ -83,7 +87,7 @@ class Table extends JDialog {
 
         top = top + rdHeight + 10;
         int psWidth = 460;
-        int psHeight = (game.players.size() * 50) + 40;
+        int psHeight = (game.players.size() * 50) + 50;
 
         ps = new PlayersSummary(game);
         ps.buildAndShow();
@@ -91,6 +95,50 @@ class Table extends JDialog {
         add(ps);
         
 
+        // TURNS
+        
+        top = 5;
+        left = 500;
+        
+        int tsWidth = 850;
+        int tsHeight = 120;
+
+        ts = new TurnStatus(game);
+        ts.buildAndShow();
+        ts.setBounds(left, top, tsWidth, tsHeight);
+        add(ts);
+        
+
+        // SHOW MOVE
+        
+        top = 200;
+        left = 530;
+        
+        int showWidth = 800;
+        int showHeight = 400;
+
+        pcm = new PlayerChooseMove(null, null, null, null);
+        pcm.build();
+        pcm.setBounds(left, top, showWidth, showHeight);
+        pcm.setVisible(false);
+        add(pcm);
+
+        ss = new ShowSheet(game.current);
+        ss.build();
+        ss.setBounds(left, top, showWidth, showHeight);
+        ss.setVisible(false);
+        add(ss);
+        
+        System.out.println("Table.buildAndShow: creating ShowMove null" );
+        sm = new ShowMove(game.current, WhichTurn.TYPE.COLOR, null);
+        sm.build();
+        sm.setBounds(left, top, showWidth, showHeight);
+        System.out.println("Table.buildAndShow: showing ShowMove null" );
+        sm.setVisible(true);
+        add(sm);
+        
+        
+        /*
         // TURNS
         
         top = top + psHeight + 100;
@@ -102,8 +150,6 @@ class Table extends JDialog {
         ts.setBounds(left, top, tsWidth, tsHeight);
         add(ts);
         
-        // ts.setPlayerTurn(game.current, WhichTurn.TYPE.WHITE);
-        
 
         // SHOW MOVE
         
@@ -111,7 +157,7 @@ class Table extends JDialog {
         left = 500;
         
         int showWidth = 800;
-        int showHeight = 300;
+        int showHeight = 400;
 
         ss = new ShowSheet(game.current);
         ss.build();
@@ -127,8 +173,7 @@ class Table extends JDialog {
         sm.setVisible(true);
         add(sm);
         
-        // ts.setPlayerTurn(game.current, WhichTurn.TYPE.WHITE);
-
+        */
         
         // QUIT
         
@@ -145,6 +190,24 @@ class Table extends JDialog {
         quit.setBounds(left, top, quitWidth, quitHeight);
         quit.setVisible(true);
         pane.add(quit);
+
+
+        // OK
+        
+        int okWidth = 100;
+        int okHeight = 50;
+
+        left = left - (okWidth + 10);
+
+        ok = new JButton();
+        ok.setText("OK");
+        ok.setFont(Qwixx.myfont18);
+        ok.addActionListener(new TableOKActionListener());        
+        ok.setSize(okWidth, okHeight);
+        ok.setBounds(left, top, okWidth, okHeight);
+        ok.setVisible(true);
+        pane.add(ok);
+
         
         // now for the dialog itself
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -160,6 +223,16 @@ class Table extends JDialog {
             setVisible(false);
         }
     }    
+
+    class TableOKActionListener implements ActionListener {
+
+        public void actionPerformed(ActionEvent e) {
+            isOK = true;
+            // setVisible(false);
+        }
+    }    
+
+
 }
 
 
