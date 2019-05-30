@@ -1,8 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+/****************************************************************************
+ * 2019 The Precept Group, LLC. 
+ * See LICENSE for license information.
+ ***************************************************************************/
+
 package com.precept.qwixx;
 
 import static com.precept.qwixx.Qwixx.myfont14;

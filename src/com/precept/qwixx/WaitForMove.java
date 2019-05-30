@@ -23,11 +23,14 @@ public class WaitForMove
     Player player;
     Qwixx.MOVETYPE type;
     Game game;
+    WhichTurn.TYPE turnType;
     
     public WaitForMove(TurnMove m)
     {
         this.player = m.player;
         this.type = m.type;
+        if (this.type == Qwixx.MOVETYPE.WHITES || type == Qwixx.MOVETYPE.WHITES_CONSIDERING_COLORS) turnType = WhichTurn.TYPE.WHITE;
+        if (this.type == Qwixx.MOVETYPE.COLORS) turnType = WhichTurn.TYPE.COLOR;
         this.game = player.game;
         this.se = null;
     }
@@ -119,6 +122,32 @@ public class WaitForMove
                                 player.sheet.penalties++;
                             }
                         }
+                        
+                        player.score();
+                        
+                        game.table.ps.update();
+
+                        // show human move
+                        /*
+                        ShowMoveWait smw = new ShowMoveWait(player, turnType, game.table.pcm.thisOne);
+                        smw.showMoveWait();
+                        */
+                        
+                    }
+                    
+                    // Do not show human move
+                    /* */
+                    if (game.table.sm != null)
+                    {
+                        game.table.sm.setVisible(false);
+                    }
+                    if (game.table.ss != null)
+                    {
+                        game.table.ss.setVisible(false);
+                    }
+                    if (game.table.pcm != null)
+                    {
+                        game.table.pcm.setVisible(false);
                     }
                     
                     game.table.isOK = false;
@@ -130,7 +159,7 @@ public class WaitForMove
                     {
                         if (game.gameover == Game.GAMEOVER.LOCKED)
                         {
-                            System.out.println("TakeMove.done: game over: LOCKED");
+                            System.out.println("WaitForMove.done: game over: LOCKED");
                         }
                         if (game.gameover == Game.GAMEOVER.QUIT)
                         {
@@ -149,6 +178,8 @@ public class WaitForMove
                         System.out.println("WaitForMove.done: start the next move");
                         game.takeMove();
                     }
+                    /* */
+                    
                 }  
                 catch (Exception e)  
                 { 

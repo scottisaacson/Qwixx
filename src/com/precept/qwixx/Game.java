@@ -142,6 +142,20 @@ public class Game {
     public void takeMove()
     {
         System.out.println("takeMove: Entering takeMove...");
+        
+        if (table.sm != null)
+        {
+            table.sm.setVisible(false);
+        }
+        if (table.ss != null)
+        {
+            table.ss.setVisible(false);
+        }
+        if (table.pcm != null)
+        {
+            table.pcm.setVisible(false);
+        }
+
         if (this.gameover == GAMEOVER.NO)
         {
             // any more players for this turn?
@@ -261,7 +275,7 @@ public class Game {
                 int left = 530;
 
                 int pcmWidth = 800;
-                int pcmHeight = 400;
+                int pcmHeight = 420;
 
                 table.pcm = new PlayerChooseMove(m.player, m.type, whiteMoves, colorMoves);
                 table.pcm.build();
@@ -451,6 +465,10 @@ public class Game {
         p = new Player(game, "Scott", Player.STRATEGY.Human);
         players.add(p);
         p = new Player(game, "Nina", Player.STRATEGY.Computer);
+        players.add(p);
+        p = new Player(game, "Sam", Player.STRATEGY.Computer);
+        players.add(p);
+        p = new Player(game, "Hunter", Player.STRATEGY.Computer);
         players.add(p);
         
         /*

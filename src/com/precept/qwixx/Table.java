@@ -76,7 +76,7 @@ class Table extends JDialog {
         rd.buildAndShow();
         
         int rdWidth = 400;
-        int rdHeight = 320;
+        int rdHeight = 390; //320;
         
         top = 5;
         left = 5;
@@ -85,7 +85,7 @@ class Table extends JDialog {
         
         // PLAYERS SUMMARY
 
-        top = top + rdHeight + 10;
+        top = top + rdHeight + 20;
         int psWidth = 460;
         int psHeight = (game.players.size() * 50) + 50;
 
@@ -115,7 +115,7 @@ class Table extends JDialog {
         left = 530;
         
         int showWidth = 800;
-        int showHeight = 400;
+        int showHeight = 420;
 
         pcm = new PlayerChooseMove(null, null, null, null);
         pcm.build();
@@ -136,44 +136,6 @@ class Table extends JDialog {
         System.out.println("Table.buildAndShow: showing ShowMove null" );
         sm.setVisible(true);
         add(sm);
-        
-        
-        /*
-        // TURNS
-        
-        top = top + psHeight + 100;
-        int tsWidth = 820;
-        int tsHeight = 120;
-
-        ts = new TurnStatus(game);
-        ts.buildAndShow();
-        ts.setBounds(left, top, tsWidth, tsHeight);
-        add(ts);
-        
-
-        // SHOW MOVE
-        
-        top = 100;
-        left = 500;
-        
-        int showWidth = 800;
-        int showHeight = 400;
-
-        ss = new ShowSheet(game.current);
-        ss.build();
-        ss.setBounds(left, top, showWidth, showHeight);
-        ss.setVisible(false);
-        add(ss);
-        
-        System.out.println("Table.buildAndShow: creating ShowMove null" );
-        sm = new ShowMove(game.current, Qwixx.MOVETYPE.WHITES, null);
-        sm.build();
-        sm.setBounds(left, top, showWidth, showHeight);
-        System.out.println("Table.buildAndShow: showing ShowMove null" );
-        sm.setVisible(true);
-        add(sm);
-        
-        */
         
         // QUIT
         
@@ -205,7 +167,7 @@ class Table extends JDialog {
         ok.addActionListener(new TableOKActionListener());        
         ok.setSize(okWidth, okHeight);
         ok.setBounds(left, top, okWidth, okHeight);
-        ok.setVisible(true);
+        ok.setVisible(false);
         pane.add(ok);
 
         

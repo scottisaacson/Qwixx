@@ -1,8 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+/****************************************************************************
+ * 2019 The Precept Group, LLC. 
+ * See LICENSE for license information.
+ ***************************************************************************/
+
 package com.precept.qwixx;
 
 import javax.swing.*;
@@ -248,9 +248,6 @@ class MoveSelect extends JPanel
         setVisible(true);
     }
     
-    
-    
-    
 }
 
 
@@ -261,12 +258,6 @@ class MoveSelectListener implements MouseListener {
 
         MoveSelect ms = (MoveSelect) e.getComponent();
         PlayerChooseMove pcm = (PlayerChooseMove) ms.getParent();
-
-        /*
-        Container c1 = ms.getParent();   // Panel
-        Container c2 = c1.getParent();   // Display
-        Container c3 = c2.getParent();   // Root
-        */
          
         int val = ms.val;
         Game.COLORS c = null;
@@ -315,14 +306,7 @@ class MoveSelectListener implements MouseListener {
     public void mousePressed(MouseEvent e) {
 
         MoveSelect ms = (MoveSelect) e.getComponent();
-
         PlayerChooseMove pcm = (PlayerChooseMove) ms.getParent();
-
-        /*
-        Container c1 = ms.getParent();   // Panel
-        Container c2 = c1.getParent();   // Display
-        Container c3 = c2.getParent();   // Root
-        */
          
         int val = ms.val;
         Game.COLORS c = null;

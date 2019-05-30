@@ -1,3 +1,8 @@
+/****************************************************************************
+ * 2019 The Precept Group, LLC. 
+ * See LICENSE for license information.
+ ***************************************************************************/
+
 package com.precept.qwixx;
 
 import javax.swing.*;
@@ -34,6 +39,8 @@ class ShowMove extends JPanel {
     DisplayValue blueCount;
     
  
+    JButton ok;
+    boolean isok;
     JLabel title;
     JLabel event;
     
@@ -73,7 +80,7 @@ class ShowMove extends JPanel {
         setBorder(BorderFactory.createLineBorder(Color.black));
 
         int fullWidth = 800;
-        int fullHeight = 400;
+        int fullHeight = 420;
         
         int left = 5;
         int top = 5;
@@ -331,6 +338,8 @@ class ShowMove extends JPanel {
             
             sb.append(thisOne.val);
         }
+
+        title.setText(player.name + "'s " + type + " move: " + sb.toString());
         
         event = new JLabel(sb.toString());
         event.setFont(Qwixx.myfont18);
@@ -342,8 +351,25 @@ class ShowMove extends JPanel {
         add(event);
         
         event.setBounds(left, top, eventWidth, eventHeight);
-        event.setVisible(true);
+        event.setVisible(false);
 
+        
+        // SKIP or TAKE A PENALTY
+        
+        top = top + 60;
+
+        // Create a button
+        ok = new JButton();
+        ok.setText("OK");
+        ok.setFont(Qwixx.myfont18);
+        ok.addActionListener(new SMOKActionListener());        
+        ok.setBounds(500, top, 250, 50);
+        ok.setVisible(true);
+        isok = false;
+        add(ok);
+        
+        
+        
         // ALL DONE
         
        
@@ -423,6 +449,15 @@ class ShowMove extends JPanel {
         
     }
 
+    class SMOKActionListener implements ActionListener {
+
+        //close and dispose of the window.
+        public void actionPerformed(ActionEvent e) {
+            isok = true;
+        }
+    }    
+
+    
 }
 
 

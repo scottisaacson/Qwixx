@@ -97,7 +97,7 @@ class PlayerChooseMove extends JPanel {
         setBorder(BorderFactory.createLineBorder(Color.black));
 
         int fullWidth = 800;
-        int fullHeight = 400;
+        int fullHeight = 420;
         
         setSize(fullWidth, fullHeight);
         
@@ -152,27 +152,12 @@ class PlayerChooseMove extends JPanel {
         dvScore.buildAndShow();
 
         
-        // Create a button
-        skip = new JButton();
-        if (type == Qwixx.MOVETYPE.COLORS)
-        {
-            skip.setText("TAKE A PENTALTY");
-        }
-        else
-        {
-            skip.setText("SKIP");
-        }
-        skip.setFont(Qwixx.myfont18);
-        // set action listener on the button
-        skip.addActionListener(new PCMSkipActionListener());        
-
-        
         // BUILD TITLE
         
         int titleWidth = 600;
         int titleHeight = 50;
         
-        title = new JLabel(player.name + "'s " + type + " move");
+        title = new JLabel(player.name + "'s " + turnType + "S move");
         title.setFont(Qwixx.myfont18);
         title.setBackground(Color.white);
         title.setOpaque(true);
@@ -188,7 +173,8 @@ class PlayerChooseMove extends JPanel {
         title.setVisible(true);
 
 
-        top = top + 55;
+        top = top + titleHeight + 10;
+        //top = top + 55;
         
         // REDS
         
@@ -338,6 +324,14 @@ class PlayerChooseMove extends JPanel {
         dvPenalties.buildAndShow();
         add(dvPenalties);
         
+        
+        
+        
+        
+        
+        
+        
+        
         // Highlight the moves
         // if consider, then highlight both whites with WHITE and colors with COLOR
         //      AND THEN check for overlap....
@@ -362,8 +356,26 @@ class PlayerChooseMove extends JPanel {
             
         }
         
+        
+        // SKIP or TAKE A PENALTY
+        
         top = top + 60;
 
+        // Create a button
+        skip = new JButton();
+        if (type == Qwixx.MOVETYPE.COLORS)
+        {
+            skip.setText("TAKE A PENTALTY");
+        }
+        else
+        {
+            skip.setText("SKIP");
+        }
+        skip.setFont(Qwixx.myfont18);
+        // set action listener on the button
+        skip.addActionListener(new PCMSkipActionListener());        
+
+        
         skip.setBounds(500, top, 250, 50);
         skip.setVisible(true);
         add(skip);

@@ -3,6 +3,7 @@
  *  See the LICENSE file for license information.
  *
  *********************************************************/
+
 package com.precept.qwixx;
 
 import javax.swing.*;

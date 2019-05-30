@@ -1,8 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+/****************************************************************************
+ * 2019 The Precept Group, LLC. 
+ * See LICENSE for license information.
+ ***************************************************************************/
+
 package com.precept.qwixx;
 
 import javax.swing.*;
@@ -40,6 +40,8 @@ class RolledDice extends JPanel {
     DisplayValue whitesyellow;
     DisplayValue whitesgreen;
     DisplayValue whitesblue;
+    
+    JLabel title;
 
 
     public RolledDice (Game game) {
@@ -48,6 +50,7 @@ class RolledDice extends JPanel {
         this.frame = game.frame;
         this.dice = game.dice;
         this.player = game.current;
+        this.title = null;
     }
         
     public void buildAndShow () 
@@ -57,9 +60,28 @@ class RolledDice extends JPanel {
         setBorder(BorderFactory.createLineBorder(Color.black));
         setLayout(null);
 
-        setSize(400, 320);
+        setSize(400, 390);
 
-        int diceTop = 10;
+        int titleWidth = 300;
+        int titleHeight = 50;
+
+        int left = 50;
+        int top = 10;
+        
+        String playerName = "<empty>";
+        if (player != null ) playerName = player.name;
+        title = new JLabel(playerName + "'s ROLL");
+        title.setFont(Qwixx.myfont18);
+        title.setBackground(Color.white);
+        title.setOpaque(true);
+        title.setSize(titleWidth, titleHeight);
+        title.setBounds(left, top, titleWidth, titleHeight);
+        title.setHorizontalAlignment(JLabel.CENTER);
+        title.setVerticalAlignment(JLabel.CENTER);        
+        add(title);
+        
+        
+        int diceTop = 80;
         int diceLeft = 10;
         int diceGapLittle = 10;
         int diceGapBig = 20;
@@ -385,13 +407,11 @@ class RolledDice extends JPanel {
         setBorder(BorderFactory.createLineBorder(Color.black));
         setLayout(null);
 
-        setSize(400, 320);
+        // setSize(400, 390);
 
-        int diceTop = 10;
-        int diceLeft = 10;
-        int diceGapLittle = 10;
-        int diceGapBig = 20;
-
+        title.setText(game.current.name + "'s ROLL");
+        
+        
         white1.update(dice.white1.val);
         white2.update(dice.white2.val);
         

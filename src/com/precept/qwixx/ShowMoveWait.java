@@ -60,7 +60,7 @@ public class ShowMoveWait
         int top = 200;
         int left = 530;
         int showWidth = 800;
-        int showHeight = 400;
+        int showHeight = 420;
 
         game.table.sm.setBounds(left, top, showWidth, showHeight);
         game.table.sm.setVisible(true);
@@ -85,9 +85,18 @@ public class ShowMoveWait
                 boolean done = false;
                 while (!done)  
                 { 
-                    Thread.sleep(100); 
-                    if (game.table.isOK) done = true;
+                    // auto next
+                    /*
+                    Thread.sleep(2000);
+                    done = true;
+                    */
+                    
+                    //manual next
+                    
+                    Thread.sleep(100);
+                    if (game.table.sm.isok) done = true;
                     if (game.table.isquit) done = true;
+                    
                 } 
 
                 String res = "Done"; 
@@ -106,7 +115,7 @@ public class ShowMoveWait
                 try 
                 {
                     
-                    System.out.println("showMoveWait.done: ... waking up, done: " + player.name + " " + type);
+                    System.out.println("ShowMoveWait.done: ... waking up, done: " + player.name + " " + type);
                     
                     if (game.table.sm != null)
                     {
@@ -121,6 +130,7 @@ public class ShowMoveWait
                         game.table.pcm.setVisible(false);
                     }
                     
+                    game.table.sm.isok = false;
                     game.table.isOK = false;
                     
                     game.checkForNewLock();
@@ -130,15 +140,15 @@ public class ShowMoveWait
                     {
                         if (game.gameover == Game.GAMEOVER.LOCKED)
                         {
-                            System.out.println("TakeMove.done: game over: LOCKED");
+                            System.out.println("ShowMoveWait.done: game over: LOCKED");
                         }
                         if (game.gameover == Game.GAMEOVER.QUIT)
                         {
-                            System.out.println("TakeMove.done: game over: QUIT");
+                            System.out.println("ShowMoveWait.done: game over: QUIT");
                         }
                         if (game.gameover == Game.GAMEOVER.PENALTIES)
                         {
-                            System.out.println("TakeMove.done: game over: PENALTIES");
+                            System.out.println("ShowMoveWait.done.done: game over: PENALTIES");
                         }
 
                         if (game.table != null) game.table.dispose();
@@ -146,7 +156,7 @@ public class ShowMoveWait
                     }
                     else
                     {
-                        System.out.println("showMoveWait.done: start the next move");
+                        System.out.println("ShowMoveWait.done: start the next move");
                         game.takeMove();
                     }
                 }  

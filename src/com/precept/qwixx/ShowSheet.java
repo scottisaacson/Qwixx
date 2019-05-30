@@ -1,3 +1,8 @@
+/****************************************************************************
+ * 2019 The Precept Group, LLC. 
+ * See LICENSE for license information.
+ ***************************************************************************/
+
 package com.precept.qwixx;
 
 import javax.swing.*;
@@ -65,7 +70,7 @@ class ShowSheet extends JPanel {
 
 
         int fullWidth = 800;
-        int fullHeight = 400;
+        int fullHeight = 420;
         
         int left = 5;
         int top = 5;
