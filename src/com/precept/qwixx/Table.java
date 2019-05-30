@@ -129,11 +129,11 @@ class Table extends JDialog {
         ss.setVisible(false);
         add(ss);
         
-        System.out.println("Table.buildAndShow: creating ShowMove null" );
+        if (game.debug) System.out.println("Table.buildAndShow: creating ShowMove null" );
         sm = new ShowMove(game.current, WhichTurn.TYPE.COLOR, null);
         sm.build();
         sm.setBounds(left, top, showWidth, showHeight);
-        System.out.println("Table.buildAndShow: showing ShowMove null" );
+        if (game.debug) System.out.println("Table.buildAndShow: showing ShowMove null" );
         sm.setVisible(true);
         add(sm);
         

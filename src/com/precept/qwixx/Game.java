@@ -24,9 +24,12 @@ public class Game {
     ArrayList<Player> players;
     Player current;
     int cpi;
-    // public boolean interactive;
-    ArrayList<TurnMove> orderedPlayers;
+    ArrayList<TurnMove> orderedMoves;
 
+    public boolean interactive;
+    public int interactiveWaitTime;
+    public boolean debug;
+    
     boolean redslocked;
     boolean yellowslocked;
     boolean greenslocked;
@@ -86,12 +89,16 @@ public class Game {
             }
         }
 
-        orderedPlayers = null;
-        /*
-        setNextPlayer();
-        orderedPlayers = new ArrayList<TurnMove>();
-        */
+        orderedMoves = null;
+
+        debug = false;
         
+
+        // false for no human interaction
+        // true for human interaction
+        interactive = true;
+        interactiveWaitTime = 2000;
+
     }
 
     
@@ -126,6 +133,7 @@ public class Game {
             }
         }
         current = players.get(cpi);
+        checkForNewLock();
     }
 
     
@@ -141,7 +149,7 @@ public class Game {
     
     public void takeMove()
     {
-        System.out.println("takeMove: Entering takeMove...");
+        if (debug) System.out.println("takeMove: Entering takeMove...");
         
         if (table.sm != null)
         {
@@ -159,28 +167,28 @@ public class Game {
         if (this.gameover == GAMEOVER.NO)
         {
             // any more players for this turn?
-            if (orderedPlayers == null || orderedPlayers.size() == 0)
+            if (orderedMoves == null || orderedMoves.size() == 0)
             {
-                System.out.println("takeMove: no more moves on this roll");
+                if (debug) System.out.println("takeMove: no more moves on this roll");
                 // no more players for this turn, start a new turn
                 setNextPlayer();
-                System.out.println("takeMove: new current = " + current.name);
+                if (debug) System.out.println("takeMove: new current = " + current.name);
                 dice.roll();
-                table.rd.newDice();
-                System.out.println("takeMove: new dice");
+                table.rd.update();
+                if (debug) System.out.println("takeMove: new dice");
                 
-                orderedPlayers = getOrderedPlayers();
+                orderedMoves = getOderedMoves();
             }
 
-            if (orderedPlayers == null || orderedPlayers.size() == 0)
+            if (orderedMoves == null || orderedMoves.size() == 0)
             {
                 if (table != null) table.dispose();
-                System.out.println("ERROR: no players");
+                if (debug) System.out.println("ERROR: no players");
                 System.exit(-20);
             }
             
-            TurnMove m = orderedPlayers.remove(0);
-            System.out.println("takeMove: working on " + m.player.name + " " + m.type);
+            TurnMove m = orderedMoves.remove(0);
+            if (debug) System.out.println("takeMove: working on " + m.player.name + " " + m.type);
             
             // SETUP
 
@@ -237,7 +245,7 @@ public class Game {
                 {
                     sb.append("" + se.color + " " + se.val);
                 }
-                System.out.println("takeMove: player " + m.player.name + " " + turnString + " chose: " + sb.toString());
+                if (debug) System.out.println("takeMove: player " + m.player.name + " " + turnString + " chose: " + sb.toString());
 
                 table.ps.update();
 
@@ -369,11 +377,13 @@ public class Game {
             {
                 if (p.shouldLockBlues())
                 {
-                    redslocked = true;
+                    blueslocked = true;
                 }
             }
             
         }
+        
+        return;
         
         
     }
@@ -494,7 +504,7 @@ public class Game {
         return players;
     }    
     
-    public ArrayList<TurnMove> getOrderedPlayers()
+    public ArrayList<TurnMove> getOderedMoves()
     {
 
         TurnMove m = null;
@@ -512,16 +522,16 @@ public class Game {
             {
                 m = new TurnMove(p, Qwixx.MOVETYPE.WHITES_CONSIDERING_COLORS);
                 ret.add(m);
-                System.out.println("getOrderedPlayers: adding " + p.name + " " + "WHITES_CONSIDEING_COLORS");
+                if (debug) System.out.println("getOrderedPlayers: adding " + p.name + " " + "WHITES_CONSIDEING_COLORS");
                 m = new TurnMove(p, Qwixx.MOVETYPE.COLORS);
                 ret.add(m);
-                System.out.println("getOrderedPlayers: adding " + p.name + " " + "COLORS");
+                if (debug) System.out.println("getOrderedPlayers: adding " + p.name + " " + "COLORS");
             }
             else
             {
                 m = new TurnMove(p, Qwixx.MOVETYPE.WHITES);
                 ret.add(m);
-                System.out.println("getOrderedPlayers: adding " + p.name + " " + "WHITES");
+                if (debug) System.out.println("getOrderedPlayers: adding " + p.name + " " + "WHITES");
                 
             }
             index++;

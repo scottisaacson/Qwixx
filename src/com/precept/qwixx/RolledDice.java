@@ -400,7 +400,7 @@ class RolledDice extends JPanel {
     }
 
 
-    public void newDice() 
+    public void update() 
     {
         
         setBackground(Qwixx.myback1);

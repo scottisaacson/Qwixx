@@ -39,7 +39,7 @@ public class WaitForMove
     { 
 
         
-        System.out.println("waitforMove: sleeping...");
+        if (game.debug) System.out.println("waitforMove: sleeping...");
         startThread();  
     }
     
@@ -77,7 +77,7 @@ public class WaitForMove
             { 
                 try 
                 {
-                    System.out.println("WaitForMove.done: ... waking up, done: " + player.name + " " + type);
+                    if (game.debug) System.out.println("WaitForMove.done: ... waking up, done: " + player.name + " " + type);
                     
                     if (game.table.sm != null)
                     {
@@ -127,58 +127,65 @@ public class WaitForMove
                         
                         game.table.ps.update();
 
-                        // show human move
                         /*
-                        ShowMoveWait smw = new ShowMoveWait(player, turnType, game.table.pcm.thisOne);
-                        smw.showMoveWait();
-                        */
+                        if (game.interactive == false)
+                        {
+                            // show human move
+                            ShowMoveWait smw = new ShowMoveWait(player, turnType, game.table.pcm.thisOne);
+                            smw.showMoveWait();
+                        }
+                         */  
                         
                     }
                     
-                    // Do not show human move
-                    /* */
-                    if (game.table.sm != null)
+                    /*
+                    if (game.interactive == true)
                     {
-                        game.table.sm.setVisible(false);
-                    }
-                    if (game.table.ss != null)
-                    {
-                        game.table.ss.setVisible(false);
-                    }
-                    if (game.table.pcm != null)
-                    {
-                        game.table.pcm.setVisible(false);
-                    }
-                    
-                    game.table.isOK = false;
-                    
-                    game.checkForNewLock();
-                    game.checkForGameOver();
-
-                    if (game.gameover != Game.GAMEOVER.NO)
-                    {
-                        if (game.gameover == Game.GAMEOVER.LOCKED)
+                    */
+                        // Do not show human move
+                        if (game.table.sm != null)
                         {
-                            System.out.println("WaitForMove.done: game over: LOCKED");
+                            game.table.sm.setVisible(false);
                         }
-                        if (game.gameover == Game.GAMEOVER.QUIT)
+                        if (game.table.ss != null)
                         {
-                            System.out.println("WaitForMove.done: game over: QUIT");
+                            game.table.ss.setVisible(false);
                         }
-                        if (game.gameover == Game.GAMEOVER.PENALTIES)
+                        if (game.table.pcm != null)
                         {
-                            System.out.println("WaitForMove.done: game over: PENALTIES");
+                            game.table.pcm.setVisible(false);
                         }
 
-                        if (game.table != null) game.table.dispose();
-                        game.endGame();
-                    }
-                    else
-                    {
-                        System.out.println("WaitForMove.done: start the next move");
-                        game.takeMove();
-                    }
-                    /* */
+                        game.table.sm.isok = false;
+                        game.table.isOK = false;
+
+                        game.checkForNewLock();
+                        game.checkForGameOver();
+
+                        if (game.gameover != Game.GAMEOVER.NO)
+                        {
+                            if (game.gameover == Game.GAMEOVER.LOCKED)
+                            {
+                                if (game.debug) System.out.println("WaitForMove.done: game over: LOCKED");
+                            }
+                            if (game.gameover == Game.GAMEOVER.QUIT)
+                            {
+                                if (game.debug) System.out.println("WaitForMove.done: game over: QUIT");
+                            }
+                            if (game.gameover == Game.GAMEOVER.PENALTIES)
+                            {
+                                if (game.debug) System.out.println("WaitForMove.done: game over: PENALTIES");
+                            }
+
+                            if (game.table != null) game.table.dispose();
+                            game.endGame();
+                        }
+                        else
+                        {
+                            if (game.debug) System.out.println("WaitForMove.done: start the next move");
+                            game.takeMove();
+                        }
+                    //}
                     
                 }  
                 catch (Exception e)  

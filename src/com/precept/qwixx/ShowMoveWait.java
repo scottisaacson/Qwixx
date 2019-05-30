@@ -43,16 +43,16 @@ public class ShowMoveWait
 
         if (game.table.ss != null)
         {
-            System.out.println("showMoveWait: hiding ShowSheet");
+            if (game.debug) System.out.println("showMoveWait: hiding ShowSheet");
             game.table.ss.setVisible(false);
         }
         if (game.table.sm != null)
         {
-            System.out.println("showMoveWait: hiding ShowMove");
+            if (game.debug) System.out.println("showMoveWait: hiding ShowMove");
             game.table.sm.setVisible(false);
         }
 
-        System.out.println("showMoveWait: creating new ShowMove " + turnString);
+        if (game.debug) System.out.println("showMoveWait: creating new ShowMove " + turnString);
 
         game.table.sm = new ShowMove(player, type, se);
         game.table.sm.build();
@@ -64,10 +64,10 @@ public class ShowMoveWait
 
         game.table.sm.setBounds(left, top, showWidth, showHeight);
         game.table.sm.setVisible(true);
-        System.out.println("showMoveWait: adding new ShowMove " + turnString);
+        if (game.debug) System.out.println("showMoveWait: adding new ShowMove " + turnString);
         game.table.add(game.table.sm);
 
-        System.out.println("showMoveWait: sleeping...");
+        if (game.debug) System.out.println("showMoveWait: sleeping...");
         startThread();  
             
     }
@@ -85,18 +85,21 @@ public class ShowMoveWait
                 boolean done = false;
                 while (!done)  
                 { 
-                    // auto next
-                    /*
-                    Thread.sleep(2000);
-                    done = true;
-                    */
-                    
-                    //manual next
-                    
-                    Thread.sleep(100);
-                    if (game.table.sm.isok) done = true;
-                    if (game.table.isquit) done = true;
-                    
+                    if (game.interactive == true)
+                    {
+                        //manual next
+                        Thread.sleep(100);
+                        if (game.table.sm.isok) done = true;
+                        if (game.table.isquit) done = true;
+                    }
+                    else
+                    {
+
+                        // auto next
+                        Thread.sleep(game.interactiveWaitTime);
+                        done = true;
+                    }
+
                 } 
 
                 String res = "Done"; 
@@ -115,7 +118,7 @@ public class ShowMoveWait
                 try 
                 {
                     
-                    System.out.println("ShowMoveWait.done: ... waking up, done: " + player.name + " " + type);
+                    if (game.debug) System.out.println("ShowMoveWait.done: ... waking up, done: " + player.name + " " + type);
                     
                     if (game.table.sm != null)
                     {
@@ -140,15 +143,15 @@ public class ShowMoveWait
                     {
                         if (game.gameover == Game.GAMEOVER.LOCKED)
                         {
-                            System.out.println("ShowMoveWait.done: game over: LOCKED");
+                            if (game.debug) System.out.println("ShowMoveWait.done: game over: LOCKED");
                         }
                         if (game.gameover == Game.GAMEOVER.QUIT)
                         {
-                            System.out.println("ShowMoveWait.done: game over: QUIT");
+                            if (game.debug) System.out.println("ShowMoveWait.done: game over: QUIT");
                         }
                         if (game.gameover == Game.GAMEOVER.PENALTIES)
                         {
-                            System.out.println("ShowMoveWait.done.done: game over: PENALTIES");
+                            if (game.debug) System.out.println("ShowMoveWait.done.done: game over: PENALTIES");
                         }
 
                         if (game.table != null) game.table.dispose();
@@ -156,7 +159,7 @@ public class ShowMoveWait
                     }
                     else
                     {
-                        System.out.println("ShowMoveWait.done: start the next move");
+                        if (game.debug) System.out.println("ShowMoveWait.done: start the next move");
                         game.takeMove();
                     }
                 }  

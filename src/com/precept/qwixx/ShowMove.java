@@ -364,7 +364,14 @@ class ShowMove extends JPanel {
         ok.setFont(Qwixx.myfont18);
         ok.addActionListener(new SMOKActionListener());        
         ok.setBounds(500, top, 250, 50);
-        ok.setVisible(true);
+        if (game.interactive)
+        {
+            ok.setVisible(true);
+        }
+        else
+        {
+            ok.setVisible(false);
+        }
         isok = false;
         add(ok);
         

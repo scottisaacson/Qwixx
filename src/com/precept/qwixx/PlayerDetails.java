@@ -89,7 +89,7 @@ class PlayerDetails extends JDialog {
     public void buildAndShow () {
         
         Container pane = getContentPane();
-        pane.setBackground(Qwixx.mydarkgrey);
+        pane.setBackground(Qwixx.myback1);
  
         int top = 5;
         int left = 5;
