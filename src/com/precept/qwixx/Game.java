@@ -512,7 +512,8 @@ public class Game {
         
         int count = 0;
         int size = players.size();
-        int index = cpi + 1;
+        // int index = cpi + 1;
+        int index = cpi;
         if (index == size) index = 0;
         
         while (count < size)

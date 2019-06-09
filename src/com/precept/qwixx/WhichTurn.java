@@ -23,6 +23,7 @@ class WhichTurn extends JPanel
     };
     
     Color color;
+    boolean highlight;
     String text;
     TYPE type;
     JLabel l;
