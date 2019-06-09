@@ -128,20 +128,19 @@ public class WaitForMove
                         game.table.ps.update();
 
                         /*
-                        if (game.interactive == false)
+                        if (game.interactive == true)
                         {
                             // show human move
                             ShowMoveWait smw = new ShowMoveWait(player, turnType, game.table.pcm.thisOne);
                             smw.showMoveWait();
                         }
-                         */  
+                        */  
                         
                     }
                     
-                    /*
+                    /* */
                     if (game.interactive == true)
                     {
-                    */
                         // Do not show human move
                         if (game.table.sm != null)
                         {
@@ -185,7 +184,8 @@ public class WaitForMove
                             if (game.debug) System.out.println("WaitForMove.done: start the next move");
                             game.takeMove();
                         }
-                    //}
+                    }
+                    /*  */
                     
                 }  
                 catch (Exception e)  
