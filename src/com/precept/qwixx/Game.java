@@ -216,7 +216,7 @@ public class Game {
             }
 
             // SET THE PLAYER TURN STATUS
-            table.ts.setPlayerTurn(m.player, turnType);
+            table.ts.setPlayerTurn(m, turnType);
 
             // m.player.played = false;
 
@@ -251,7 +251,7 @@ public class Game {
 
                 table.ps.update();
 
-                ShowMoveWait smw = new ShowMoveWait(m.player, turnType, se);
+                ShowMoveWait smw = new ShowMoveWait(m.player, turnType, se, m.whoRolled);
                 smw.showMoveWait();
             }
             else
@@ -287,7 +287,7 @@ public class Game {
                 int pcmWidth = 800;
                 int pcmHeight = 420;
 
-                table.pcm = new PlayerChooseMove(m.player, m.type, whiteMoves, colorMoves);
+                table.pcm = new PlayerChooseMove(m.player, m.type, whiteMoves, colorMoves, m.whoRolled);
                 table.pcm.build();
                 table.pcm.setBounds(left, top, pcmWidth, pcmHeight);
                 table.pcm.setVisible(true);
@@ -524,16 +524,16 @@ public class Game {
             p.played = false;
             if (p.equals(current))
             {
-                m = new TurnMove(p, Qwixx.MOVETYPE.WHITES_CONSIDERING_COLORS);
+                m = new TurnMove(p, Qwixx.MOVETYPE.WHITES_CONSIDERING_COLORS, current);
                 ret.add(m);
                 if (debug) System.out.println("getOrderedPlayers: adding " + p.name + " " + "WHITES_CONSIDEING_COLORS");
-                m = new TurnMove(p, Qwixx.MOVETYPE.COLORS);
+                m = new TurnMove(p, Qwixx.MOVETYPE.COLORS, current);
                 ret.add(m);
                 if (debug) System.out.println("getOrderedPlayers: adding " + p.name + " " + "COLORS");
             }
             else
             {
-                m = new TurnMove(p, Qwixx.MOVETYPE.WHITES);
+                m = new TurnMove(p, Qwixx.MOVETYPE.WHITES, current);
                 ret.add(m);
                 if (debug) System.out.println("getOrderedPlayers: adding " + p.name + " " + "WHITES");
                 

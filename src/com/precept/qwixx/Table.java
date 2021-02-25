@@ -117,7 +117,7 @@ class Table extends JDialog {
         int showWidth = 800;
         int showHeight = 420;
 
-        pcm = new PlayerChooseMove(null, null, null, null);
+        pcm = new PlayerChooseMove(null, null, null, null, null);
         pcm.build();
         pcm.setBounds(left, top, showWidth, showHeight);
         pcm.setVisible(false);
@@ -130,7 +130,7 @@ class Table extends JDialog {
         add(ss);
         
         if (game.debug) System.out.println("Table.buildAndShow: creating ShowMove null" );
-        sm = new ShowMove(game.current, WhichTurn.TYPE.COLOR, null);
+        sm = new ShowMove(game.current, WhichTurn.TYPE.COLOR, null, null);
         sm.build();
         sm.setBounds(left, top, showWidth, showHeight);
         if (game.debug) System.out.println("Table.buildAndShow: showing ShowMove null" );

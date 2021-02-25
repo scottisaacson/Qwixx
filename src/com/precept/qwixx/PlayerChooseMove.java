@@ -23,6 +23,7 @@ class PlayerChooseMove extends JPanel {
     Game game;
     Frame frame;
     Player player;
+    Player whoRolled;
 
     ArrayList<MoveSelect> reds;
     ArrayList<MoveSelect> yellows;
@@ -46,7 +47,7 @@ class PlayerChooseMove extends JPanel {
     
 
     
-    public PlayerChooseMove (Player player, Qwixx.MOVETYPE type, ArrayList<Move> whiteMoves, ArrayList<Move> colorMoves) {
+    public PlayerChooseMove (Player player, Qwixx.MOVETYPE type, ArrayList<Move> whiteMoves, ArrayList<Move> colorMoves, Player w) {
         
         super();
         
@@ -55,12 +56,14 @@ class PlayerChooseMove extends JPanel {
             this.player = null;
             this.game = null;
             this.frame = null;
+            this.whoRolled = null;
         }
         else
         {
             this.player = player;
             this.game = player.game;
             this.frame = player.game.frame;
+            this.whoRolled = w;
         }
 
         this.type = type;
@@ -156,8 +159,15 @@ class PlayerChooseMove extends JPanel {
         
         int titleWidth = 600;
         int titleHeight = 50;
-        
-        title = new JLabel(player.name + "'s " + turnType + "S move");
+
+        String titleString = null;
+        if (turnType == WhichTurn.TYPE.WHITE) {
+            titleString = player.name + "'s " + turnType + " move (" + whoRolled.name + "'s roll)";
+        } else {
+            titleString = player.name + "'s " + turnType + " move (" + whoRolled.name + "'s roll)";
+        }
+        // title = new JLabel(player.name + "'s " + turnType + "S move");
+        title = new JLabel(titleString);
         title.setFont(Qwixx.myfont18);
         title.setBackground(Color.white);
         title.setOpaque(true);

@@ -70,30 +70,17 @@ public class TurnStatus extends JPanel {
 
     }
     
-    public void setPlayerTurn(Player p, WhichTurn.TYPE type)
+    public void setPlayerTurn(TurnMove m, WhichTurn.TYPE type)
     {
         for (TurnStatusPlayer tsp : players)
         {
-            
-            /*
-            if (tsp.player.equals(p) && tsp.player.equals(p.game.current))
-            {
-                tsp.name.setBorder(BorderFactory.createLineBorder(Color.yellow, 3));
-                if (type == WhichTurn.TYPE.COLOR)
-                {
-                    tsp.color.color = Color.yellow;
-                    tsp.white.color = Color.gray;
-                }
-                else
-                {
-                    tsp.color.color = Color.gray;
-                    tsp.white.color = Color.yellow;
-                }
-            }
-            else */ 
-            if (tsp.player.equals(p))
-            {
+            if (tsp.player.equals(m.whoRolled)) {
                 tsp.name.setBackground(Color.yellow);
+            } else {
+                tsp.name.setBackground(Color.gray);
+            }
+            if (tsp.player.equals(m.player))
+            {
                 if (type == WhichTurn.TYPE.COLOR)
                 {
                     tsp.color.color = Color.yellow;
@@ -107,7 +94,7 @@ public class TurnStatus extends JPanel {
             }
             else
             {
-                tsp.name.setBackground(Color.gray);
+                // tsp.name.setBackground(Color.gray);
                 tsp.color.color = Color.gray;
                 tsp.white.color = Color.gray;
             }

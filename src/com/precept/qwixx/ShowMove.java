@@ -20,6 +20,7 @@ class ShowMove extends JPanel {
     Game game;
     Frame frame;
     Player player;
+    Player whoRolled;
 
     ArrayList<MoveSelect> reds;
     ArrayList<MoveSelect> yellows;
@@ -49,7 +50,7 @@ class ShowMove extends JPanel {
     public WhichTurn.TYPE type = WhichTurn.TYPE.WHITE;
     
 
-    public ShowMove (Player player, WhichTurn.TYPE type, SheetEntry thisOne) {
+    public ShowMove (Player player, WhichTurn.TYPE type, SheetEntry thisOne, Player w) {
         
         super();
         
@@ -58,12 +59,14 @@ class ShowMove extends JPanel {
             this.player = player;
             this.game = player.game;
             this.frame = player.game.frame;
+            this.whoRolled = w;
         }
         else
         {
             this.player = null;
             this.game = null;
             this.frame = null;
+            this.whoRolled = null;
         }
 
         this.type = type;
@@ -136,8 +139,8 @@ class ShowMove extends JPanel {
         
         int titleWidth = 600;
         int titleHeight = 50;
-        
-        title = new JLabel(player.name + "'s " + type + " move");
+
+        title = new JLabel("");
         title.setFont(Qwixx.myfont18);
         title.setBackground(Color.white);
         title.setOpaque(true);
@@ -339,7 +342,14 @@ class ShowMove extends JPanel {
             sb.append(thisOne.val);
         }
 
-        title.setText(player.name + "'s " + type + " move: " + sb.toString());
+        String titleString = null;
+        if (type == WhichTurn.TYPE.WHITE) {
+            titleString = player.name + "'s " + type + " move (" + whoRolled.name + "'s roll): " + sb.toString();
+        } else {
+            titleString = player.name + "'s " + type + " move (" + whoRolled.name + "'s roll): " + sb.toString();
+        }
+        // title.setText(player.name + "'s " + type + " move: " + sb.toString());
+        title.setText(titleString);
         
         event = new JLabel(sb.toString());
         event.setFont(Qwixx.myfont18);

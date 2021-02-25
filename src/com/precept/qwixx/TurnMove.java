@@ -16,11 +16,14 @@ public class TurnMove {
     
     Player player;
     Qwixx.MOVETYPE type;
+    Player whoRolled;
     
-    public TurnMove (Player p, Qwixx.MOVETYPE t)
+    public TurnMove (Player p, Qwixx.MOVETYPE t, Player w)
     {
         this.player = p;
         this.type = t;
+        this.whoRolled = w;
+
     }
     
 }

@@ -23,13 +23,15 @@ public class ShowMoveWait
     Player player;
     WhichTurn.TYPE type;
     Game game;
+    Player whoRolled;
     
-    public ShowMoveWait(Player p, WhichTurn.TYPE t, SheetEntry se)
+    public ShowMoveWait(Player p, WhichTurn.TYPE t, SheetEntry se, Player w)
     {
         this.player = p;
         this.type = t;
         this.game = player.game;
         this.se = se;
+        this.whoRolled = w;
     }
     
     public void showMoveWait()  
@@ -54,7 +56,7 @@ public class ShowMoveWait
 
         if (game.debug) System.out.println("showMoveWait: creating new ShowMove " + turnString);
 
-        game.table.sm = new ShowMove(player, type, se);
+        game.table.sm = new ShowMove(player, type, se, whoRolled);
         game.table.sm.build();
 
         int top = 200;
