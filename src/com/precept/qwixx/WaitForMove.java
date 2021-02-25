@@ -38,7 +38,6 @@ public class WaitForMove
     public void waitForMove()  
     { 
 
-        
         if (game.debug) System.out.println("waitforMove: sleeping...");
         startThread();  
     }
@@ -100,6 +99,7 @@ public class WaitForMove
                             {
                                 SheetEntry selected = game.table.pcm.thisOne;
                                 selected.markIt();
+                                player.played = true;
                             }
                         }
                         else if (type == Qwixx.MOVETYPE.WHITES_CONSIDERING_COLORS)
@@ -108,6 +108,7 @@ public class WaitForMove
                             {
                                 SheetEntry selected = game.table.pcm.thisOne;
                                 selected.markIt();
+                                player.played = true;
                             }
                         }
                         else // if (type == Qwixx.MOVETYPE.COLORS)
@@ -116,10 +117,13 @@ public class WaitForMove
                             {
                                 SheetEntry selected = game.table.pcm.thisOne;
                                 selected.markIt();
+                                player.played = true;
                             }
                             else
                             {
-                                player.sheet.penalties++;
+                                if (player.played == false) {
+                                    player.sheet.penalties++;
+                                }
                             }
                         }
                         

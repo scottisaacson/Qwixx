@@ -547,7 +547,7 @@ class RolledDice extends JPanel {
             green1.unlock();
         }
 
-        green1.update(white2.die.val + green.die.val);
+        green2.update(white2.die.val + green.die.val);
         if (game.greenslocked)
         {
             green2.lock();

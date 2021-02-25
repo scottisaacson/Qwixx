@@ -217,7 +217,9 @@ public class Game {
 
             // SET THE PLAYER TURN STATUS
             table.ts.setPlayerTurn(m.player, turnType);
-            
+
+            // m.player.played = false;
+
             if (m.player.strategy == Player.STRATEGY.Computer)
             {
                 SheetEntry se = null;
@@ -519,6 +521,7 @@ public class Game {
         while (count < size)
         {
             Player p = players.get(index);
+            p.played = false;
             if (p.equals(current))
             {
                 m = new TurnMove(p, Qwixx.MOVETYPE.WHITES_CONSIDERING_COLORS);

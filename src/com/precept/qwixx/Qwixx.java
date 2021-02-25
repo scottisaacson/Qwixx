@@ -141,7 +141,8 @@ public class Qwixx
     
     public static Image getResourceImage(Object o, String resName)
     {
-        javax.swing.ImageIcon ii = new javax.swing.ImageIcon(o.getClass().getResource("/" + resName));
+        //javax.swing.ImageIcon ii = new javax.swing.ImageIcon(o.getClass().getResource("/" + resName));
+        javax.swing.ImageIcon ii = new javax.swing.ImageIcon("/Users/sisaacson/projects/Qwixx2/resources/" + resName);
         Image ret = ii.getImage();
         
         return ret;

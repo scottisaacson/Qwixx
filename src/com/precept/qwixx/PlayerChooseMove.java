@@ -365,7 +365,11 @@ class PlayerChooseMove extends JPanel {
         skip = new JButton();
         if (type == Qwixx.MOVETYPE.COLORS)
         {
-            skip.setText("TAKE A PENTALTY");
+            if (player.played == false) {
+                skip.setText("TAKE A PENTALTY");
+            } else {
+                skip.setText("SKIP");
+            }
         }
         else
         {

@@ -32,6 +32,7 @@ public class Player {
     Game game;
     String name;
     Sheet sheet;
+    Boolean played;
     
     boolean showComputerMoves = false;
     
@@ -46,6 +47,7 @@ public class Player {
         this.strategy = s;
         this.whiteMoves = new ArrayList<Move>();
         this.colorMoves = new ArrayList<Move>();
+        this.played = false;
         
     }
     
@@ -98,7 +100,7 @@ public class Player {
             return thisOne;
         }
 
-        // MarkIt
+        played = true;
         thisOne.markIt();
         score();
         
@@ -129,6 +131,7 @@ public class Player {
         }
 
         // MarkIt
+        played = true;
         thisOne.markIt();
         score();
 
@@ -155,13 +158,15 @@ public class Player {
 
         if (thisOne == null)
         {
-            sheet.penalties++;
+            if (played == false) {
+                sheet.penalties++;
+            }
             score();
-
             return thisOne;
         }
         
         // MarkIt
+        played = true;
         thisOne.markIt();
         score();
 
